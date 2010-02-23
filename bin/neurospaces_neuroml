@@ -50,9 +50,17 @@ sub main
 {
     read_cmd_line();
 
+    require Neurospaces;
     require Neurospaces::NeuroML;
 
-    
+    my $parser = Neurospaces::NeuroML::Parser->new();
+
+    my $result = $parser->read($ARGV[0]);
+
+    if ($result)
+    {
+	die "$0: parsing of $ARGV[0] failed ($result)";
+    }
 }
 
 

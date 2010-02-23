@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<neuroml xmlns="http://morphml.org/neuroml/schema" xmlns:meta="http://morphml.org/metadata/schema" xmlns:mml="http://morphml.org/morphml/schema" xmlns:bio="http://morphml.org/biophysics/schema" xmlns:cml="http://morphml.org/channelml/schema" xmlns:net="http://morphml.org/networkml/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://morphml.org/neuroml/schema  NeuroML.xsd" lengthUnits="micron">
+<cells>
+    <cell name="Golgi_98_3D">
+        <meta:notes>An extension in 3D using ChannelML of the Granule cell model from:
+
+Maex, R and De Schutter, E. Synchronization of Golgi and Granule Cell Firing in a Detailed Network Model of the Cerebellar Granule Cell Layer, 1998</meta:notes>
+        <mml:segments>
+            <mml:segment id="0" name="Soma" cable="0">
+                <mml:proximal x="0.0" y="0.0" z="0.0" diameter="30.0"/>
+                <mml:distal x="0.0" y="0.0" z="0.0" diameter="30.0"/>
+            </mml:segment>
+            <mml:segment id="1" name="DendSegment" parent="0" cable="1">
+                <mml:proximal x="0.0" y="0.0" z="0.0" diameter="1.0"/>
+                <mml:distal x="0.0" y="75.0" z="0.0" diameter="1.0"/>
+            </mml:segment>
+            <mml:segment id="2" name="DendSegment2" parent="1" cable="2">
+                <mml:proximal x="0.0" y="75.0" z="0.0" diameter="1.0"/>
+                <mml:distal x="0.0" y="150.0" z="0.0" diameter="1.0"/>
+            </mml:segment>
+            <mml:segment id="3" name="DendSegment3" parent="2" cable="3">
+                <mml:proximal x="0.0" y="150.0" z="0.0" diameter="1.0"/>
+                <mml:distal x="0.0" y="200.0" z="0.0" diameter="1.0"/>
+            </mml:segment>
+        </mml:segments>
+        <mml:cables>
+            <mml:cable id="0" name="Soma">
+                <meta:group>all</meta:group>
+                <meta:group>soma_group</meta:group>
+            </mml:cable>
+            <mml:cable id="1" name="DendSection" fract_along_parent="0.0">
+                <meta:group>all</meta:group>
+                <meta:group>dendrite_group</meta:group>
+            </mml:cable>
+            <mml:cable id="2" name="DendSection2">
+                <meta:group>all</meta:group>
+                <meta:group>dendrite_group</meta:group>
+            </mml:cable>
+            <mml:cable id="3" name="DendSection3">
+                <meta:group>all</meta:group>
+                <meta:group>dendrite_group</meta:group>
+                <meta:group>GranSynapses</meta:group>
+            </mml:cable>
+        </mml:cables>
+        <!--Adding the biophysical parameters-->
+        <biophysics units="Physiological Units">
+            <bio:mechanism name="Golgi_KCa_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.571654">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_CaHVA_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.831757">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_KA_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.524928">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="GolgiPassiveCond" type="Channel Mechanism" passive_conductance="true">
+                <bio:parameter name="e" value="-55.0">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+                <bio:parameter name="gmax" value="0.033">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_H_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.171496">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_CaPool_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="5.18213E-7">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_KDr_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="6.78839">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Golgi_NaF_CML" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="40.0158">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:spec_capacitance>
+                <bio:parameter value="1.0">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:spec_capacitance>
+            <bio:spec_axial_resistance>
+                <bio:parameter value="0.1">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:spec_axial_resistance>
+            <bio:init_memb_potential>
+                <bio:parameter value="-70.0">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:init_memb_potential>
+        </biophysics>
+        <connectivity>
+            <net:potential_syn_loc synapse_type="AMPA_GranGol">
+                <net:group>GranSynapses</net:group>
+            </net:potential_syn_loc>
+            <net:potential_syn_loc synapse_type="GABAA" synapse_direction="preAndOrPost">
+                <net:group>soma_group</net:group>
+            </net:potential_syn_loc>
+        </connectivity>
+    </cell>
+</cells></neuroml>

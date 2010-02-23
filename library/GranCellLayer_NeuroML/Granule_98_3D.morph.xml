@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<neuroml xmlns="http://morphml.org/neuroml/schema" xmlns:meta="http://morphml.org/metadata/schema" xmlns:mml="http://morphml.org/morphml/schema" xmlns:bio="http://morphml.org/biophysics/schema" xmlns:cml="http://morphml.org/channelml/schema" xmlns:net="http://morphml.org/networkml/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://morphml.org/neuroml/schema  NeuroML.xsd" lengthUnits="micron">
+<cells>
+    <cell name="Granule_98_3D">
+        <meta:notes>An extension to 3D of the Granule cell model from:
+
+Maex, R and De Schutter, E. Synchronization of Golgi and Granule Cell Firing in a Detailed Network Model of the Cerebellar Granule Cell Layer, 1998
+
+incorporating channel mechanisms based on ChannelML</meta:notes>
+        <mml:segments>
+            <mml:segment id="0" name="Soma" cable="0">
+                <mml:proximal x="0.0" y="0.0" z="0.0" diameter="10.0"/>
+                <mml:distal x="0.0" y="0.0" z="0.0" diameter="10.0"/>
+            </mml:segment>
+            <mml:segment id="1" name="AscendingSegSec" parent="0" cable="1">
+                <mml:proximal x="0.0" y="0.0" z="0.0" diameter="2.0"/>
+                <mml:distal x="0.0" y="200.0" z="0.0" diameter="2.0"/>
+            </mml:segment>
+            <mml:segment id="2" name="LeftParallelFiberSeg" parent="1" cable="2">
+                <mml:proximal x="0.0" y="200.0" z="0.0" diameter="2.0"/>
+                <mml:distal x="-400.0" y="200.0" z="0.0" diameter="2.0"/>
+            </mml:segment>
+            <mml:segment id="3" name="RightParallelFiberSeg" parent="1" cable="3">
+                <mml:proximal x="0.0" y="200.0" z="0.0" diameter="2.0"/>
+                <mml:distal x="400.0" y="200.0" z="0.0" diameter="2.0"/>
+            </mml:segment>
+        </mml:segments>
+        <mml:cables>
+            <mml:cable id="0" name="Soma">
+                <meta:group>all</meta:group>
+                <meta:group>soma_group</meta:group>
+            </mml:cable>
+            <mml:cable id="1" name="AscendingSeg" fract_along_parent="0.0">
+                <meta:group>all</meta:group>
+                <meta:group>axon_group</meta:group>
+            </mml:cable>
+            <mml:cable id="2" name="LeftParallelFiber">
+                <meta:group>all</meta:group>
+                <meta:group>axon_group</meta:group>
+                <meta:group>parallel_fibers</meta:group>
+            </mml:cable>
+            <mml:cable id="3" name="RightParallelFiber">
+                <meta:group>all</meta:group>
+                <meta:group>axon_group</meta:group>
+                <meta:group>parallel_fibers</meta:group>
+            </mml:cable>
+        </mml:cables>
+        <!--Adding the biophysical parameters-->
+        <biophysics units="Physiological Units">
+            <bio:mechanism name="Gran_CaHVA_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.9084216">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_KA_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="1.14567">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="GranPassiveCond" type="Channel Mechanism" passive_conductance="true">
+                <bio:parameter name="e" value="-65.0">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+                <bio:parameter name="gmax" value="0.0330033">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_KCa_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="17.9811">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_CaPool_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="5.18213E-7">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_KDr_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="8.89691">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_NaF_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="55.7227">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:mechanism name="Gran_H_98" type="Channel Mechanism">
+                <bio:parameter name="gmax" value="0.03090506">
+                    <bio:group>soma_group</bio:group>
+                </bio:parameter>
+            </bio:mechanism>
+            <bio:spec_capacitance>
+                <bio:parameter value="1.0">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:spec_capacitance>
+            <bio:spec_axial_resistance>
+                <bio:parameter value="0.1">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:spec_axial_resistance>
+            <bio:init_memb_potential>
+                <bio:parameter value="-65.0">
+                    <bio:group>all</bio:group>
+                </bio:parameter>
+            </bio:init_memb_potential>
+            <!--
+Note that the following Ap Prop Speeds are specified for the cell, but this is not yet supported by NeuroML!
+  - AP propagation speed: 1000.0 ?m ms^-1 is present on: [axon_group]
+-->
+</biophysics>
+        <connectivity>
+            <net:potential_syn_loc synapse_type="NMDA" synapse_direction="preAndOrPost">
+                <net:group>soma_group</net:group>
+            </net:potential_syn_loc>
+            <net:potential_syn_loc synapse_type="MF_AMPA" synapse_direction="preAndOrPost">
+                <net:group>soma_group</net:group>
+            </net:potential_syn_loc>
+            <net:potential_syn_loc synapse_type="AMPA_GranGol">
+                <net:group>parallel_fibers</net:group>
+            </net:potential_syn_loc>
+            <net:potential_syn_loc synapse_type="GABAA" synapse_direction="preAndOrPost">
+                <net:group>soma_group</net:group>
+            </net:potential_syn_loc>
+        </connectivity>
+    </cell>
+</cells></neuroml>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channelml xmlns="http://morphml.org/channelml/schema" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:meta="http://morphml.org/metadata/schema" 
+    xsi:schemaLocation="http://morphml.org/channelml/schema  ../../../../templates/xmlTemplates/Schemata/v1.1/Level2/ChannelML_v1.1.xsd" 
+    units="SI Units">
+
+    <meta:notes>A channel from Maex, R and De Schutter, E. Synchronization of Golgi and Granule Cell Firing in a 
+    Detailed Network Model of the Cerebellar Granule Cell Layer. J Neurophysiol, Nov 1998; 80: 2521 - 2537.
+    Note, the values used here are based on the GENESIS scripts accompanying the paper</meta:notes>
+    
+    <ion name="na" charge="1" default_erev="0.055"/>  
+    
+    <channel_type name="Golgi_NaF_CML" density="yes">
+    
+        <meta:notes>Inactivating fast Na+ channel. Note that the abrupt change in the value of tau means that a quite small
+        dt (~0.001 ms) is needed to give the same results for a cell with just this channel (and a leak current) on 
+        NEURON and GENESIS</meta:notes>
+        
+        <current_voltage_relation>
+            <ohmic ion="na">
+		    <conductance default_gmax="400.158">   
+                    <rate_adjustments>
+                        <q10_settings q10_factor="3" experimental_temp="17.350264793"/>
+                    </rate_adjustments>
+                    <gate power="3">
+                        <state name="m" fraction="1"/>
+                    </gate>
+                      <gate power="1">
+                        <state name="h" fraction="1"/>
+                      </gate>
+                </conductance>
+            </ohmic>
+        </current_voltage_relation>
+	
+	
+	
+        <hh_gate state="m">
+            <transition>
+                <voltage_gate>
+                      <alpha>
+                          <parameterised_hh type="exponential" expr="A*exp(k*(v-d))">
+                                  <parameter name="A" value="1500"/>
+                                  <parameter name="k" value="81"/>
+                                  <parameter name="d" value="-0.039"/>
+                          </parameterised_hh>
+                      </alpha>
+                      <beta>
+                          <parameterised_hh type="exponential" expr="A*exp(k*(v-d))">
+                                  <parameter name="A" value="1500"/>
+                                  <parameter name="k" value="-66"/>
+                                  <parameter name="d" value="-0.039"/>
+                          </parameterised_hh>
+                      </beta>
+                     <!--  Note: this puts a lower limit on tau. It can be a function of alpha and beta    -->
+                      <tau>
+                        <generic_equation_hh expr="1/(alpha + beta) &lt; 0.00005 ? 0.00005 : 1/(alpha + beta)"/>
+                      </tau> 
+                </voltage_gate>
+              </transition>
+	</hh_gate>
+	
+	     
+	<hh_gate state="h">
+            <transition>
+                <voltage_gate>
+                    <alpha>
+                        <parameterised_hh type="exponential" expr="A*exp(k*(v-d))">
+                                <parameter name="A" value="120"/>
+                                <parameter name="k" value="-89"/>
+                                <parameter name="d" value="-0.05"/>
+                        </parameterised_hh>
+                    </alpha>
+                    <beta>
+                        <parameterised_hh type="exponential" expr="A*exp(k*(v-d))">
+                                <parameter name="A" value="120"/>
+                                <parameter name="k" value="89"/>
+                                <parameter name="d" value="-0.05"/>
+                        </parameterised_hh>
+                    </beta>
+               <!-- Note: this puts a lower limit on tau. It can be a function of alpha and beta   -->
+                    <tau>
+                         <generic_equation_hh expr="1/(alpha + beta) &lt; 0.000225 ? 0.000225 : 1/(alpha + beta)"/>
+                    </tau>
+                
+                </voltage_gate>
+            </transition>
+	</hh_gate>
+	
+	
+	<impl_prefs>
+		<table_settings max_v="0.05" min_v="-0.1" table_divisions="2999"/>
+        </impl_prefs>
+		
+    </channel_type>
+</channelml>

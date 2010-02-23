@@ -1,0 +1,113 @@
+#!/usr/bin/perl -w
+#!/usr/bin/perl -d:ptkdb -w
+#
+
+use strict;
+
+
+BEGIN
+{
+    #! make check
+
+    push @INC, '../perl';
+
+    #! make distcheck
+
+    push @INC, '../../perl';
+
+    #! normal run
+
+    push @INC, './perl';
+
+    #! after install
+
+    push @INC, '/usr/local/glue/swig/perl';
+}
+
+
+use Data::Dumper;
+
+use Getopt::Long;
+
+use YAML;
+
+
+BEGIN
+{
+    $SIG{__DIE__}
+	= sub {
+	    use Carp;
+
+	    confess @_;
+	};
+}
+
+
+our $option_verbose;
+
+
+sub main
+{
+    read_cmd_line();
+
+    require Neurospaces::NeuroML;
+
+    
+}
+
+
+sub read_cmd_line
+{
+    my $option_help;
+    my $option_version;
+
+    my $result
+	= GetOptions
+	    (
+	     "help!" => \$option_help,
+	     "v|verbose+" => \$option_verbose,
+	     "version" => \$option_version,
+	    );
+
+    if ($option_version)
+    {
+	my $version = version();
+
+	print $version . "\n";
+
+	exit 1;
+    }
+
+    if ($option_help || @ARGV eq 0)
+    {
+	print
+	    "
+$0 <model-filename>
+
+$0: parse a model description, interact with the model.
+
+options :
+    --help                   print usage information.
+    --verbose                set verbosity level.
+    --version                give version information.
+";
+
+	exit 1;
+    }
+}
+
+
+sub version
+{
+#     # $Format: "    my $version=\"${package}-${label}\";"$
+#     my $version="studio-userdocs-6";
+
+#     return $version;
+
+    return '0.1';
+}
+
+
+main();
+
+

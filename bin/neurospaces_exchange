@@ -51,9 +51,9 @@ sub main
     read_cmd_line();
 
     require Neurospaces;
-    require Neurospaces::NeuroML;
+    require Neurospaces::Exchange;
 
-    my $parser = Neurospaces::NeuroML::Parser->new();
+    my $parser = Neurospaces::Exchange::Parser->new();
 
     my $result = $parser->read($ARGV[0]);
 

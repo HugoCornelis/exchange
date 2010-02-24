@@ -11,7 +11,7 @@ use XML::Simple;
 # use XML::Twig;
 
 
-package Neurospaces::NeuroML::Parser;
+package Neurospaces::Exchange::Parser;
 
 
 sub new
@@ -57,7 +57,12 @@ sub read
 
     print Dump($self->{xml_simple});
 
-    0;
+    if ($self->{xml_simple}->{cells})
+    {
+	
+    }
+
+    return '';
 }
 
 

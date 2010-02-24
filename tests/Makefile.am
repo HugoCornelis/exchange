@@ -1,10 +1,10 @@
 ##
-## neuroml: NeuroML support for genesis 3.
+## XML exchange: NeuroML and NineML support for genesis 3.
 ##
 
 ##############################################################################
 ##'
-##' neuroml
+##' XML exchange
 ##'
 ##' Copyright (C) 2007-2008 Hugo Cornelis
 ##'

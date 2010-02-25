@@ -70,6 +70,8 @@ sub read
 
 	    my $cell = Neurospaces::Components::Cell->new();
 
+	    $cell->set_name($xml_cell->{name});
+
 	    my $segment = Neurospaces::Components::Segment->new();
 
 	    

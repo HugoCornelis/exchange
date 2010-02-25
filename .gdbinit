@@ -1,6 +1,6 @@
 # set env NEUROSPACES_NMC_MODELS = /local_home/local_home/hugo/neurospaces_project/model-container/source/snapshots/0/library
 # set env NEUROSPACES_NMC_PROJECT_MODELS = /local_home/local_home/hugo/EM/models
-set args bin/neurospaces_neuroml library/GranuleCell_NeuroML/
+set args bin/neurospaces_exchange library/GranuleCell_NeuroML/Granule_98.morph.xml
 file /usr/bin/perl
 # break parsererror
 echo .gdbinit: Done .gdbinit\n

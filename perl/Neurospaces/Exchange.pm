@@ -6,6 +6,7 @@ use strict;
 
 
 use Neurospaces;
+use Neurospaces::Components;
 
 use XML::Simple;
 # use XML::Twig;
@@ -59,7 +60,20 @@ sub read
 
     if ($self->{xml_simple}->{cells})
     {
-	
+	if ($self->{xml_simple}->{cells}->{cell})
+	{
+	    print "exchanging cells\n";
+
+	    my $xml_cell = $self->{xml_simple}->{cells}->{cell};
+
+	    my $xml_segment = $xml_cell->{"mml:segments"}->{"mml:segment"};
+
+	    my $cell = Neurospaces::Components::Cell->new();
+
+	    my $segment = Neurospaces::Components::Segment->new();
+
+	    
+	}
     }
 
     return '';

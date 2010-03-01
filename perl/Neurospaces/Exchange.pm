@@ -15,24 +15,43 @@ use XML::Simple;
 package Neurospaces::Exchange::Parser;
 
 
+our $model_container;
+
+
 sub new
 {
     my $package = shift;
 
     my $options = shift || {};
 
-    my $model_container = Neurospaces->new();
+    if (!$model_container)
+    {
+	$model_container = Neurospaces->new();
 
-    $model_container->read(undef, [ "/usr/local/neurospaces/models/library/utilities/empty_model.ndf", ]);
+	$model_container->read(undef, [ "Neurospaces::Exchange::Parser", "/usr/local/neurospaces/models/library/utilities/empty_model.ndf", ]);
+
+    }
 
     my $self
 	= {
-	   model_container => $model_container,
+# 	   model_container => $model_container,
 # 	   xml_twig => XML::Twig->new();
 	   %$options,
 	  };
 
     bless $self, $package;
+
+    # now take care of the singleton instance references
+
+    my $backend = $model_container->backend();
+
+#     use YAML;
+
+#     print Dump($model_container);
+
+    my $reference = $backend->NeurospacesGetObject();
+
+    SwiggableNeurospaces::NeurospacesSetObject($reference);
 
     return $self;
 }
@@ -72,11 +91,26 @@ sub read
 
 	    $cell->set_name($xml_cell->{name});
 
+	    my $result = $model_container->insert($cell);
+
+	    if ($result)
+	    {
+		die "$0: $result";
+	    }
+
 	    my $segment = Neurospaces::Components::Segment->new();
 
-	    
+	    $segment->set_name($xml_segment->{name});
+
+	    use Data::Dumper;
+
+	    print Dumper($cell);
+
 	}
     }
+
+    require Neurospaces::GUI;
+    Neurospaces::GUI::gui($0);
 
     return '';
 }
@@ -88,7 +122,7 @@ sub qualify
 
     my $filename = shift;
 
-    my $result = $self->{model_container}->{neurospaces}->NeurospacesQualifyFilename($filename);
+    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
 
     return $result;
 }

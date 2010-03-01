@@ -41,18 +41,6 @@ sub new
 
     bless $self, $package;
 
-    # now take care of the singleton instance references
-
-    my $backend = $model_container->backend();
-
-#     use YAML;
-
-#     print Dump($model_container);
-
-    my $reference = $backend->NeurospacesGetObject();
-
-    SwiggableNeurospaces::NeurospacesSetObject($reference);
-
     return $self;
 }
 

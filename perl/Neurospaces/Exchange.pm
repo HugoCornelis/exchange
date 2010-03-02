@@ -12,6 +12,18 @@ use XML::Simple;
 # use XML::Twig;
 
 
+package Neurospaces::Exchange;
+
+
+sub version
+{
+    # $Format: "    my $version = \"${package}-${label}\";"$
+    my $version = "exchange-userdocs-6";
+
+    return $version;
+}
+
+
 package Neurospaces::Exchange::Parser;
 
 
@@ -42,6 +54,18 @@ sub new
     bless $self, $package;
 
     return $self;
+}
+
+
+sub qualify
+{
+    my $self = shift;
+
+    my $filename = shift;
+
+    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
+
+    return $result;
 }
 
 
@@ -104,18 +128,6 @@ sub read
     }
 
     return $model_container;
-}
-
-
-sub qualify
-{
-    my $self = shift;
-
-    my $filename = shift;
-
-    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
-
-    return $result;
 }
 
 

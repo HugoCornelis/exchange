@@ -104,7 +104,9 @@ sub read_cmd_line
 
     if ($option_version)
     {
-	my $version = version();
+	require Neurospaces::Exchange;
+
+	my $version = Neurospaces::Exchange::version();
 
 	print $version . "\n";
 
@@ -130,17 +132,6 @@ options :
 
 	exit 1;
     }
-}
-
-
-sub version
-{
-#     # $Format: "    my $version=\"${package}-${label}\";"$
-#     my $version="studio-userdocs-6";
-
-#     return $version;
-
-    return '0.1';
 }
 
 

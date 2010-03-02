@@ -211,6 +211,8 @@ sub read
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
+		#t needs a check
+
 		$axial_resistance *= 1e-3;
 	    }
 
@@ -227,6 +229,8 @@ sub read
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
+		#t needs a check
+
 		$specific_capacitance *= 1e-2;
 	    }
 

@@ -147,6 +147,10 @@ sub read
 	    {
 		$segment->set_parameter_double("LENGTH", 0);
 	    }
+	    else
+	    {
+		die "$0: different xyz for morphologies not supported yet";
+	    }
 
 	    # insert the segment into the cell
 

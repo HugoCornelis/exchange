@@ -95,13 +95,15 @@ sub read
 	print Dump($self->{xml_simple});
     }
 
+    # construct the cell morphology
+
     if ($self->{xml_simple}->{cells})
     {
 	if ($self->{xml_simple}->{cells}->{cell})
 	{
-	    my $xml_cell = $self->{xml_simple}->{cells}->{cell};
+	    # construct cell
 
-	    my $xml_segment = $xml_cell->{"mml:segments"}->{"mml:segment"};
+	    my $xml_cell = $self->{xml_simple}->{cells}->{cell};
 
 	    my $cell = Neurospaces::Components::Cell->new();
 
@@ -114,9 +116,23 @@ sub read
 		die "$0: $result";
 	    }
 
+	    # construct segment
+
+	    my $xml_segment = $xml_cell->{"mml:segments"}->{"mml:segment"};
+
 	    my $segment = Neurospaces::Components::Segment->new();
 
 	    $segment->set_name($xml_segment->{name});
+
+	    # set cable ID
+
+	    $segment->set_parameter_string("NEUROML_CABLE_ID", $xml_segment->{cable});
+
+	    # add biophysics group name to the segment
+
+	    
+
+	    # insert the segment into the cell
 
 	    $cell->insert($segment);
 
@@ -126,6 +142,8 @@ sub read
 
 	}
     }
+
+    # add the 
 
     return $model_container;
 }

@@ -134,8 +134,23 @@ sub read
 
 	    # add biophysics group name to the segment
 
-	    $segment->set_parameter_string("NEUROML_group[0]", $xml_cable->{"meta:group"}->[0] );
-	    $segment->set_parameter_string("NEUROML_group[1]", $xml_cable->{"meta:group"}->[1] );
+	    my $meta_groups = $xml_cable->{"meta:group"};
+
+	    my $meta_group_index = {};
+
+	    foreach my $meta_group_count (0 .. $#$meta_groups)
+	    {
+		$segment->set_parameter_string("NEUROML_group[$meta_group_count]", $xml_cable->{"meta:group"}->[$meta_group_count] );
+
+		# maintain group indices
+
+		if (not defined $meta_group_index->{$xml_cable->{"meta:group"}->[$meta_group_count]})
+		{
+		    $meta_group_index->{$xml_cable->{"meta:group"}->[$meta_group_count]} = [];
+		}
+
+		push @{$meta_group_index->{$xml_cable->{"meta:group"}->[$meta_group_count]}}, $segment;
+	    }
 
 	    # set spatial dimensions
 
@@ -168,14 +183,66 @@ sub read
 		die "$0: $result";
 	    }
 
-# 	    use Data::Dumper;
+	    # access biophysics properties
 
-# 	    print Dumper($cell);
+	    my $biophysics = $xml_cell->{biophysics};
+
+	    # distribute initial membrane potential
+
+	    my $Vm_init_group = $biophysics->{"bio:init_memb_potential"}->{"bio:parameter"}->{"bio:group"};
+
+	    my $Vm_init = $biophysics->{"bio:init_memb_potential"}->{"bio:parameter"}->{"value"};
+
+	    if ($biophysics->{units} eq 'Physiological Units')
+	    {
+		$Vm_init *= 1e-3;
+	    }
+
+	    foreach my $segment ( @{ $meta_group_index->{$Vm_init_group}} )
+	    {
+		$segment->set_parameter_double("Vm_init", $Vm_init);
+	    }
+
+	    # distribute axial resistance
+
+	    my $axial_resistance_group = $biophysics->{"bio:spec_axial_resistance"}->{"bio:parameter"}->{"bio:group"};
+
+	    my $axial_resistance = $biophysics->{"bio:spec_axial_resistance"}->{"bio:parameter"}->{"value"};
+
+	    if ($biophysics->{units} eq 'Physiological Units')
+	    {
+		$axial_resistance *= 1e-3;
+	    }
+
+	    foreach my $segment ( @{ $meta_group_index->{$axial_resistance_group}} )
+	    {
+		$segment->set_parameter_double("RA", $axial_resistance);
+	    }
+
+	    # distribute specific capacitance
+
+	    my $specific_capacitance_group = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"bio:group"};
+
+	    my $specific_capacitance = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"value"};
+
+	    if ($biophysics->{units} eq 'Physiological Units')
+	    {
+		$specific_capacitance *= 1e-3;
+	    }
+
+	    foreach my $segment ( @{ $meta_group_index->{$specific_capacitance_group}} )
+	    {
+		$segment->set_parameter_double("CM", $specific_capacitance);
+	    }
+
+ 	    use Data::Dumper;
+
+ 	    print Dumper($meta_group_index);
 
 	}
     }
 
-    # add the 
+    # return result: the model container with models
 
     return $model_container;
 }

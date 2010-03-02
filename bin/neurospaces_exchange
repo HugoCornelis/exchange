@@ -43,6 +43,8 @@ BEGIN
 }
 
 
+my $option_commands = [];
+my $option_gui;
 our $option_verbose;
 
 
@@ -55,12 +57,31 @@ sub main
 
     my $parser = Neurospaces::Exchange::Parser->new();
 
-    my $result = $parser->read($ARGV[0]);
+    my $model_container = $parser->read($ARGV[0]);
 
-    if ($result)
+    if (!$model_container)
     {
-	die "$0: parsing of $ARGV[0] failed ($result)";
+	die "$0: parsing of $ARGV[0] failed";
     }
+
+    if (@$option_commands)
+    {
+	foreach my $command (@$option_commands)
+	{
+	    print "command $command\n";
+
+	    $model_container->querymachine($command);
+	}
+    }
+
+    if ($option_gui)
+    {
+	require Neurospaces::GUI;
+
+	Neurospaces::GUI::gui($0);
+    }
+
+
 }
 
 
@@ -72,6 +93,8 @@ sub read_cmd_line
     my $result
 	= GetOptions
 	    (
+	     "commands=s" => $option_commands,
+	     "gui!" => \$option_gui,
 	     "help!" => \$option_help,
 	     "v|verbose+" => \$option_verbose,
 	     "version" => \$option_version,
@@ -95,6 +118,8 @@ $0 <model-filename>
 $0: parse a model description, interact with the model.
 
 options :
+    --commands               execute these query machine commands after loading a file.
+    --gui                    enter the gui.
     --help                   print usage information.
     --verbose                set verbosity level.
     --version                give version information.

@@ -97,10 +97,7 @@ sub read
 	}
     }
 
-    require Neurospaces::GUI;
-    Neurospaces::GUI::gui($0);
-
-    return '';
+    return $model_container;
 }
 
 

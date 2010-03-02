@@ -14,7 +14,7 @@
 ##############################################################################
 
 
-SUBDIRS = perl tests
+SUBDIRS = perl
 
 dist_bin_SCRIPTS = \
 	bin/neurospaces_exchange
@@ -81,6 +81,8 @@ docs-level6:
 docs-level7:
 
 docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 docs-level7
+
+TESTS = $(srcdir)/tests/neurospaces_harness
 
 TMP_DIR = tmp
 

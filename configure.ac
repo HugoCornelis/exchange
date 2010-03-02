@@ -54,7 +54,6 @@ AC_SUBST(TEST_SPECIFICATION_FILES)
 
 AC_CONFIG_FILES([Makefile
 		 perl/Makefile
-		 tests/Makefile
 		])
 AC_OUTPUT
 

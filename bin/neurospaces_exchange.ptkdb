@@ -1,0 +1,16 @@
+$files = {
+           '_<bin/neurospaces_exchange' => [
+                                             {
+                                               'expr' => undef,
+                                               'value' => '1',
+                                               'text' => '    my $result = $parser->read($ARGV[0]);
+',
+                                               'fname' => 'bin/neurospaces_exchange',
+                                               'type' => 'user',
+                                               'line' => '58'
+                                             }
+                                           ]
+         };
+$expr_list = [];
+$eval_saved_text = undef;
+$main_win_geometry = '1592x1115+0+0';

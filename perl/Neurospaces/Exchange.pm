@@ -116,6 +116,10 @@ sub read
 		die "$0: $result";
 	    }
 
+	    # get cable cache
+
+	    my $xml_cable = $xml_cell->{"mml:cables"}->{"mml:cable"};
+
 	    # construct segment
 
 	    my $xml_segment = $xml_cell->{"mml:segments"}->{"mml:segment"};
@@ -126,15 +130,32 @@ sub read
 
 	    # set cable ID
 
-	    $segment->set_parameter_string("NEUROML_CABLE_ID", $xml_segment->{cable});
+	    $segment->set_parameter_string("NEUROML_cable", $xml_segment->{cable});
 
 	    # add biophysics group name to the segment
 
-	    
+	    $segment->set_parameter_string("NEUROML_group[0]", $xml_cable->{"meta:group"}->[0] );
+	    $segment->set_parameter_string("NEUROML_group[1]", $xml_cable->{"meta:group"}->[1] );
+
+	    # set spatial dimensions
+
+	    $segment->set_parameter_double("DIA", $xml_segment->{"mml:distal"}->{diameter});
+
+	    if ($xml_segment->{"mml:distal"}->{x} == $xml_segment->{"mml:proximal"}->{x}
+		and $xml_segment->{"mml:distal"}->{y} == $xml_segment->{"mml:proximal"}->{y}
+		and $xml_segment->{"mml:distal"}->{z} == $xml_segment->{"mml:proximal"}->{z})
+	    {
+		$segment->set_parameter_double("LENGTH", 0);
+	    }
 
 	    # insert the segment into the cell
 
-	    $cell->insert($segment);
+	    $result = $cell->insert($segment);
+
+	    if ($result)
+	    {
+		die "$0: $result";
+	    }
 
 # 	    use Data::Dumper;
 

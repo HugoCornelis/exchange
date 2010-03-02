@@ -85,11 +85,7 @@ sub read
 
 #     $self->{xml_twig}->parsefile($qualified_filename);
 
-    print "$filename -> $qualified_filename\n";
-
     $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
-
-    print "$filename -> $qualified_filename\n";
 
     if ($options->{verbose}
 	|| $options->{yaml_stdout})

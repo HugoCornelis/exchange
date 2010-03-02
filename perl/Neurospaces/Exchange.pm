@@ -139,7 +139,14 @@ sub read
 
 	    # set spatial dimensions
 
-	    $segment->set_parameter_double("DIA", $xml_segment->{"mml:distal"}->{diameter});
+	    my $diameter = ($xml_segment->{"mml:distal"}->{diameter} + $xml_segment->{"mml:proximal"}->{diameter}) / 2;
+
+	    if ($diameter > 1)
+	    {
+		$diameter *= 1e-6;
+	    }
+
+	    $segment->set_parameter_double("DIA", $diameter);
 
 	    if ($xml_segment->{"mml:distal"}->{x} == $xml_segment->{"mml:proximal"}->{x}
 		and $xml_segment->{"mml:distal"}->{y} == $xml_segment->{"mml:proximal"}->{y}

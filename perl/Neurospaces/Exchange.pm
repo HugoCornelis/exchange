@@ -227,7 +227,7 @@ sub read
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
-		$specific_capacitance *= 1e-3;
+		$specific_capacitance *= 1e-2;
 	    }
 
 	    foreach my $segment ( @{ $meta_group_index->{$specific_capacitance_group}} )

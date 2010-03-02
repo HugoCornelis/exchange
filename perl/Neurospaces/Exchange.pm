@@ -99,8 +99,6 @@ sub read
     {
 	if ($self->{xml_simple}->{cells}->{cell})
 	{
-# 	    print "exchanging cells\n";
-
 	    my $xml_cell = $self->{xml_simple}->{cells}->{cell};
 
 	    my $xml_segment = $xml_cell->{"mml:segments"}->{"mml:segment"};
@@ -119,6 +117,8 @@ sub read
 	    my $segment = Neurospaces::Components::Segment->new();
 
 	    $segment->set_name($xml_segment->{name});
+
+	    $cell->insert($segment);
 
 # 	    use Data::Dumper;
 

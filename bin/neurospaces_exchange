@@ -46,6 +46,7 @@ BEGIN
 my $option_commands = [];
 my $option_gui;
 our $option_verbose;
+my $option_yaml_stdout;
 
 
 sub main
@@ -57,7 +58,7 @@ sub main
 
     my $parser = Neurospaces::Exchange::Parser->new();
 
-    my $model_container = $parser->read($ARGV[0], { verbose => $option_verbose, }, );
+    my $model_container = $parser->read($ARGV[0], { verbose => $option_verbose, yaml_stdout => $option_yaml_stdout, }, );
 
     if (!$model_container)
     {
@@ -98,6 +99,7 @@ sub read_cmd_line
 	     "help!" => \$option_help,
 	     "v|verbose+" => \$option_verbose,
 	     "version" => \$option_version,
+	     "yaml-stdout" => \$option_yaml_stdout,
 	    );
 
     if ($option_version)
@@ -123,6 +125,7 @@ options :
     --help                   print usage information.
     --verbose                set verbosity level.
     --version                give version information.
+    --yaml-stdout            output yamlified xml to stdout.
 ";
 
 	exit 1;

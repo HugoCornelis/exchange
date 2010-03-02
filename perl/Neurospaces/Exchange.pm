@@ -63,7 +63,8 @@ sub read
 
     $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
 
-    if ($options->{verbose})
+    if ($options->{verbose}
+	|| $options->{yaml_stdout})
     {
 	use YAML;
 

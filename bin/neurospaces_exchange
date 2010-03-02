@@ -57,7 +57,7 @@ sub main
 
     my $parser = Neurospaces::Exchange::Parser->new();
 
-    my $model_container = $parser->read($ARGV[0]);
+    my $model_container = $parser->read($ARGV[0], { verbose => $option_verbose, }, );
 
     if (!$model_container)
     {
@@ -68,7 +68,7 @@ sub main
     {
 	foreach my $command (@$option_commands)
 	{
-	    print "command $command\n";
+# 	    print "command $command\n";
 
 	    $model_container->querymachine($command);
 	}

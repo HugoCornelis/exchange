@@ -51,6 +51,8 @@ sub read
 
     my $filename = shift;
 
+    my $options = shift || {};
+
     $self->{filename} = $filename;
 
     my $qualified_filename = $self->qualify($filename);
@@ -61,15 +63,18 @@ sub read
 
     $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
 
-    use YAML;
+    if ($options->{verbose})
+    {
+	use YAML;
 
-    print Dump($self->{xml_simple});
+	print Dump($self->{xml_simple});
+    }
 
     if ($self->{xml_simple}->{cells})
     {
 	if ($self->{xml_simple}->{cells}->{cell})
 	{
-	    print "exchanging cells\n";
+# 	    print "exchanging cells\n";
 
 	    my $xml_cell = $self->{xml_simple}->{cells}->{cell};
 
@@ -90,9 +95,9 @@ sub read
 
 	    $segment->set_name($xml_segment->{name});
 
-	    use Data::Dumper;
+# 	    use Data::Dumper;
 
-	    print Dumper($cell);
+# 	    print Dumper($cell);
 
 	}
     }

@@ -18,7 +18,7 @@ package Neurospaces::Exchange;
 sub version
 {
     # $Format: "    my $version = \"${package}-${label}\";"$
-    my $version = "exchange-userdocs-6";
+    my $version = "exchange-prealpha-1";
 
     return $version;
 }

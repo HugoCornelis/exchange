@@ -58,12 +58,14 @@ sub main
 
     my $parser = Neurospaces::Exchange::Parser->new();
 
-    my $model_container = $parser->read($ARGV[0], { verbose => $option_verbose, yaml_stdout => $option_yaml_stdout, }, );
+    my $parse_error = $parser->read($ARGV[0], { verbose => $option_verbose, yaml_stdout => $option_yaml_stdout, }, );
 
-    if (!$model_container)
+    if ($parse_error)
     {
-	die "$0: parsing of $ARGV[0] failed";
+	die "$0: parsing of $ARGV[0] failed ($parse_error)";
     }
+
+    my $model_container = $parser->{model_container};
 
     if (@$option_commands)
     {

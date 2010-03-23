@@ -24,21 +24,10 @@ sub version
 }
 
 
-package Neurospaces::Exchange::Parser;
+package Neurospaces::Exchange::NeuroML;
 
 
-our $model_container;
-
-
-sub is_neuroml
-{
-    my $self = shift;
-
-    return $self->{xml_simple}->{"xsi:schemaLocation"} =~ /neuroml/i;
-}
-
-
-sub neuroml_convert
+sub convert
 {
     my $self = shift;
 
@@ -58,7 +47,7 @@ sub neuroml_convert
 
 	    $cell->set_name($xml_cell->{name});
 
-	    my $result = $model_container->insert($cell);
+	    my $result = $self->{model_container}->insert($cell);
 
 	    if ($result)
 	    {
@@ -213,9 +202,35 @@ sub neuroml_convert
 	}
     }
 
-    # return result: the model container with models
+    # return result: error message
 
-    return $model_container;
+    return undef;
+}
+
+
+package Neurospaces::Exchange::NineML;
+
+
+sub convert
+{
+    my $self = shift;
+
+    my $options = shift;
+
+    # return result: error message
+
+    return undef;
+}
+
+
+package Neurospaces::Exchange::Parser;
+
+
+sub is_neuroml
+{
+    my $self = shift;
+
+    return $self->{xml_simple}->{"xsi:schemaLocation"} =~ /neuroml/i;
 }
 
 
@@ -224,6 +239,8 @@ sub new
     my $package = shift;
 
     my $options = shift || {};
+
+    my $model_container;
 
     if (!$model_container)
     {
@@ -235,7 +252,7 @@ sub new
 
     my $self
 	= {
-# 	   model_container => $model_container,
+	   model_container => $model_container,
 # 	   xml_twig => XML::Twig->new();
 	   %$options,
 	  };
@@ -246,22 +263,13 @@ sub new
 }
 
 
-sub nineml_convert
-{
-    my $self = shift;
-
-    my $options = shift;
-
-}
-
-
 sub qualify
 {
     my $self = shift;
 
     my $filename = shift;
 
-    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
+    my $result = $self->{model_container}->{neurospaces}->NeurospacesQualifyFilename($filename);
 
     return $result;
 }
@@ -295,12 +303,14 @@ sub read
 
     if ($self->is_neuroml())
     {
-	return $self->neuroml_convert($options);
+	bless $self, "Neurospaces::Exchange::NeuroML";
     }
     else
     {
-	return $self->nineml_convert($options);
+	bless $self, "Neurospaces::Exchange::NineML";
     }
+
+    return $self->convert($options);
 }
 
 

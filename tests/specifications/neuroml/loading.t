@@ -11,6 +11,8 @@ my $test
 				arguments => [
 					      'library/NeuroML/GranuleCell/Granule_98.morph.xml',
 					      '--yaml-stdout',
+					      '--commands',
+					      'export no ndf STDOUT /**',
 					     ],
 				command => 'bin/neurospaces_exchange',
 				command_tests => [
@@ -130,6 +132,38 @@ xmlns:xsi: http://www.w3.org/2001/XMLSchema-instance
 xsi:schemaLocation: http://morphml.org/neuroml/schema  NeuroML.xsd
 ',
 # 						   timeout => 10000000,
+						  },
+						  {
+						   read => '
+#!neurospacesparse
+// -*- NEUROSPACES -*-
+
+NEUROSPACES NDF
+
+IMPORT
+END IMPORT
+
+PRIVATE_MODELS
+END PRIVATE_MODELS
+
+PUBLIC_MODELS
+  CELL Granule_98
+    SEGMENT Soma
+      PARAMETERS
+        PARAMETER ( RM = 0.0330033 ),
+        PARAMETER ( CM = 0.01 ),
+        PARAMETER ( RA = 0.001 ),
+        PARAMETER ( Vm_init = -0.065 ),
+        PARAMETER ( LENGTH = 0 ),
+        PARAMETER ( DIA = 1e-05 ),
+        PARAMETER ( NEUROML_group[1] = "soma_group" ),
+        PARAMETER ( NEUROML_group[0] = "all" ),
+        PARAMETER ( NEUROML_cable = "0" ),
+      END PARAMETERS
+    END SEGMENT
+  END CELL
+END PUBLIC_MODELS
+',
 						  },
 						 ],
 				description => "low-level yaml export of the loaded neuroml",

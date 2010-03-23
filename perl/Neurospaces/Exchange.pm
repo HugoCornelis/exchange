@@ -241,9 +241,9 @@ sub read
 
 	    # distribute leak conductance properties
 
-	    my $specific_capacitance_group = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"bio:group"};
+	    my $leak_group = $biophysics->{"bio:mechanism"}->{"GranPassiveCond"}->{"bio:parameter"}->{"gmax"}->{"bio:group"};
 
-	    my $specific_capacitance = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"value"};
+	    my $leak = $biophysics->{"bio:mechanism"}->{"GranPassiveCond"}->{"bio:parameter"}->{"gmax"}->{"value"};
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
@@ -252,9 +252,9 @@ sub read
 # 		$specific_capacitance *= 1e-1;
 	    }
 
-	    foreach my $segment ( @{ $meta_group_index->{$specific_capacitance_group}} )
+	    foreach my $segment ( @{ $meta_group_index->{$leak_group}} )
 	    {
-		$segment->set_parameter_double("CM", $specific_capacitance);
+		$segment->set_parameter_double("RM", $leak);
 	    }
 
  	    use Data::Dumper;

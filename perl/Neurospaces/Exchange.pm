@@ -38,87 +38,11 @@ sub is_neuroml
 }
 
 
-sub new
-{
-    my $package = shift;
-
-    my $options = shift || {};
-
-    if (!$model_container)
-    {
-	$model_container = Neurospaces->new();
-
-	$model_container->read(undef, [ "Neurospaces::Exchange::Parser", "/usr/local/neurospaces/models/library/utilities/empty_model.ndf", ]);
-
-    }
-
-    my $self
-	= {
-# 	   model_container => $model_container,
-# 	   xml_twig => XML::Twig->new();
-	   %$options,
-	  };
-
-    bless $self, $package;
-
-    return $self;
-}
-
-
-sub qualify
-{
-    my $self = shift;
-
-    my $filename = shift;
-
-    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
-
-    return $result;
-}
-
-
-sub read
-{
-    my $self = shift;
-
-    my $filename = shift;
-
-    my $options = shift || {};
-
-    $self->{filename} = $filename;
-
-    my $qualified_filename = $self->qualify($filename);
-
-    $self->{qualified_filename} = $qualified_filename;
-
-#     $self->{xml_twig}->parsefile($qualified_filename);
-
-    $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
-
-    if ($self->is_neuroml())
-    {
-	return $self->neuroml_convert($options);
-    }
-    else
-    {
-	return $self->nineml_convert($options);
-    }
-}
-
-
 sub neuroml_convert
 {
     my $self = shift;
 
     my $options = shift;
-
-    if ($options->{verbose}
-	|| $options->{yaml_stdout})
-    {
-	use YAML;
-
-	print Dump($self->{xml_simple});
-    }
 
     # construct the cell morphology
 
@@ -292,6 +216,91 @@ sub neuroml_convert
     # return result: the model container with models
 
     return $model_container;
+}
+
+
+sub new
+{
+    my $package = shift;
+
+    my $options = shift || {};
+
+    if (!$model_container)
+    {
+	$model_container = Neurospaces->new();
+
+	$model_container->read(undef, [ "Neurospaces::Exchange::Parser", "/usr/local/neurospaces/models/library/utilities/empty_model.ndf", ]);
+
+    }
+
+    my $self
+	= {
+# 	   model_container => $model_container,
+# 	   xml_twig => XML::Twig->new();
+	   %$options,
+	  };
+
+    bless $self, $package;
+
+    return $self;
+}
+
+
+sub nineml_convert
+{
+    my $self = shift;
+
+    my $options = shift;
+
+}
+
+
+sub qualify
+{
+    my $self = shift;
+
+    my $filename = shift;
+
+    my $result = $model_container->{neurospaces}->NeurospacesQualifyFilename($filename);
+
+    return $result;
+}
+
+
+sub read
+{
+    my $self = shift;
+
+    my $filename = shift;
+
+    my $options = shift || {};
+
+    $self->{filename} = $filename;
+
+    my $qualified_filename = $self->qualify($filename);
+
+    $self->{qualified_filename} = $qualified_filename;
+
+#     $self->{xml_twig}->parsefile($qualified_filename);
+
+    $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
+
+    if ($options->{verbose}
+	|| $options->{yaml_stdout})
+    {
+	use YAML;
+
+	print Dump($self->{xml_simple});
+    }
+
+    if ($self->is_neuroml())
+    {
+	return $self->neuroml_convert($options);
+    }
+    else
+    {
+	return $self->nineml_convert($options);
+    }
 }
 
 

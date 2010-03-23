@@ -134,6 +134,7 @@ xsi:schemaLocation: http://morphml.org/neuroml/schema  NeuroML.xsd
 # 						   timeout => 10000000,
 						  },
 						  {
+						   description => "Is the exported NDF valid?",
 						   read => '
 #!neurospacesparse
 // -*- NEUROSPACES -*-

@@ -3,11 +3,11 @@ $files = {
                                              {
                                                'expr' => undef,
                                                'value' => '1',
-                                               'text' => '    my $result = $parser->read($ARGV[0]);
+                                               'text' => '    my $model_container = $parser->read($ARGV[0], { verbose => $option_verbose, yaml_stdout => $option_yaml_stdout, }, );
 ',
                                                'fname' => 'bin/neurospaces_exchange',
                                                'type' => 'user',
-                                               'line' => '58'
+                                               'line' => '61'
                                              }
                                            ]
          };

@@ -30,6 +30,14 @@ package Neurospaces::Exchange::Parser;
 our $model_container;
 
 
+sub is_neuroml
+{
+    my $self = shift;
+
+    return $self->{xml_simple}->{"xsi:schemaLocation"} =~ /neuroml/i;
+}
+
+
 sub new
 {
     my $package = shift;
@@ -86,6 +94,23 @@ sub read
 #     $self->{xml_twig}->parsefile($qualified_filename);
 
     $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
+
+    if ($self->is_neuroml())
+    {
+	return $self->neuroml_convert($options);
+    }
+    else
+    {
+	return $self->nineml_convert($options);
+    }
+}
+
+
+sub neuroml_convert
+{
+    my $self = shift;
+
+    my $options = shift;
 
     if ($options->{verbose}
 	|| $options->{yaml_stdout})

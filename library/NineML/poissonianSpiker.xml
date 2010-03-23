@@ -1,5 +1,5 @@
 <node name="E_ext">
-  <definition><url>http://www.neuML.org/neurons/Poisson.xml</url></definition>
+  <definition><url>http://www.nineml.org/neurons/Poisson.xml</url></definition>
   <properties>
     <rate>
       <value>10</value>

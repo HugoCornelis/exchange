@@ -51,7 +51,7 @@ sub convert
 
 	    if ($result)
 	    {
-		die "$0: $result";
+		return $result;
 	    }
 
 	    # get cable cache
@@ -109,7 +109,7 @@ sub convert
 	    }
 	    else
 	    {
-		die "$0: different xyz for morphologies not supported yet";
+		return "different xyz for morphologies not supported yet";
 	    }
 
 	    # insert the segment into the cell
@@ -118,7 +118,7 @@ sub convert
 
 	    if ($result)
 	    {
-		die "$0: $result";
+		return $result;
 	    }
 
 	    # access biophysics properties
@@ -216,6 +216,20 @@ sub convert
     my $self = shift;
 
     my $options = shift;
+
+    if ($self->{xml_simple}->{definition}->{url} eq 'http://www.nineml.org/neurons/Poisson.xml')
+    {
+	my $fiber = Neurospaces::Components::Fiber->new();
+
+	$fiber->set_name($self->{xml_simple}->{name});
+
+	my $result = $self->{model_container}->insert($fiber);
+
+	if ($result)
+	{
+	    return $result;
+	}
+    }
 
     # return result: error message
 

@@ -19,7 +19,7 @@ my $test
 						  {
 						   description => 'Does the yamlified XML have the necessary information?',
 						   read => 'definition:
-  url: http://www.neuML.org/neurons/Poisson.xml
+  url: http://www.nineml.org/neurons/Poisson.xml
 name: E_ext
 note:
   text: Poisson input (page 185)
@@ -46,6 +46,8 @@ PRIVATE_MODELS
 END PRIVATE_MODELS
 
 PUBLIC_MODELS
+  FIBER E_ext
+  END FIBER
 END PUBLIC_MODELS
 ',
 						  },

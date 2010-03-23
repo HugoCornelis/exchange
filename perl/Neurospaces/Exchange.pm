@@ -211,9 +211,9 @@ sub read
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
-		#t needs a check
+		# ohm cm to ohm meter
 
-		$axial_resistance *= 1e-3;
+		$axial_resistance *= 1e-2;
 	    }
 
 	    foreach my $segment ( @{ $meta_group_index->{$axial_resistance_group}} )
@@ -229,9 +229,27 @@ sub read
 
 	    if ($biophysics->{units} eq 'Physiological Units')
 	    {
-		#t needs a check
+		# microF / cm^2 to F / m^2
 
 		$specific_capacitance *= 1e-2;
+	    }
+
+	    foreach my $segment ( @{ $meta_group_index->{$specific_capacitance_group}} )
+	    {
+		$segment->set_parameter_double("CM", $specific_capacitance);
+	    }
+
+	    # distribute leak conductance properties
+
+	    my $specific_capacitance_group = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"bio:group"};
+
+	    my $specific_capacitance = $biophysics->{"bio:spec_capacitance"}->{"bio:parameter"}->{"value"};
+
+	    if ($biophysics->{units} eq 'Physiological Units')
+	    {
+		#t kilo ohm cm^2 to ohm m^2
+
+# 		$specific_capacitance *= 1e-1;
 	    }
 
 	    foreach my $segment ( @{ $meta_group_index->{$specific_capacitance_group}} )

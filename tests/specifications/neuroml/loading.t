@@ -9,7 +9,7 @@ my $test
        command_definitions => [
 			       {
 				arguments => [
-					      'library/GranuleCell_NeuroML/Granule_98.morph.xml',
+					      'library/NeuroML/GranuleCell/Granule_98.morph.xml',
 					      '--yaml-stdout',
 					     ],
 				command => 'bin/neurospaces_exchange',

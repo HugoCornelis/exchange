@@ -1,0 +1,13 @@
+<node name="E_ext">
+  <definition><url>http://www.neuML.org/neurons/Poisson.xml</url></definition>
+  <properties>
+    <rate>
+      <value>10</value>
+      <unit>Hz</unit>
+    </rate>
+    <random>
+      <reference>RNG</reference>
+    </random>
+  </properties>
+  <note><text>Poisson input (page 185)</text></note>
+</node>

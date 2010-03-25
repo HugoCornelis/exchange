@@ -229,6 +229,18 @@ sub convert
 	{
 	    return $result;
 	}
+
+	my $randomvalue = Neurospaces::Components::Randomvalue->new();
+
+	$randomvalue->set_name($self->{xml_simple}->{name});
+
+	$result = $fiber->insert($randomvalue);
+
+	if ($result)
+	{
+	    return $result;
+	}
+
     }
 
     # return result: error message

@@ -234,12 +234,16 @@ sub convert
 
 	$randomvalue->set_name($self->{xml_simple}->{name});
 
+	#t figure out why the randomvalue was needed
+
 	$result = $fiber->insert($randomvalue);
 
 	if ($result)
 	{
 	    return $result;
 	}
+
+	$fiber->set_parameter_double("RATE", $self->{xml_simple}->{properties}->{rate}->{value});
 
     }
 

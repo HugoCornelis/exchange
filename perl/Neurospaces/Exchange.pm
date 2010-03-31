@@ -47,7 +47,7 @@ sub convert
 
 	    $cell->set_name($xml_cell->{name});
 
-	    my $result = $self->{model_container}->insert($cell);
+	    my $result = $self->{model_container}->insert_public($cell);
 
 	    if ($result)
 	    {
@@ -223,16 +223,31 @@ sub convert
 
 	$fiber->set_name($self->{xml_simple}->{name});
 
-	my $result = $self->{model_container}->insert($fiber);
+	my $result = $self->{model_container}->insert_public($fiber);
 
 	if ($result)
 	{
 	    return $result;
 	}
 
+	# set parameters of the fiber
+
+	$fiber->set_parameter_double("RATE", $self->{xml_simple}->{properties}->{rate}->{value});
+
+	# attach the random number generator
+
+	my $parser_random = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
+
+	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
+
+	if ($parser_random_error)
+	{
+	    return "cannot parse random number generator ($parser_random_error)";
+	}
+
 	my $randomvalue = Neurospaces::Components::Randomvalue->new();
 
-	$randomvalue->set_name($self->{xml_simple}->{name});
+	$randomvalue->set_name($self->{xml_simple}->{properties}->{random}->{reference});
 
 	#t figure out why the randomvalue was needed
 
@@ -242,8 +257,6 @@ sub convert
 	{
 	    return $result;
 	}
-
-	$fiber->set_parameter_double("RATE", $self->{xml_simple}->{properties}->{rate}->{value});
 
     }
 
@@ -270,7 +283,7 @@ sub new
 
     my $options = shift || {};
 
-    my $model_container;
+    my $model_container = $options->{model_container};
 
     if (!$model_container)
     {

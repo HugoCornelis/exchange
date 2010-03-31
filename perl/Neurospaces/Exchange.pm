@@ -245,17 +245,33 @@ sub convert
 	    return "cannot parse random number generator ($parser_random_error)";
 	}
 
+	# insert the randomvalue as a private model
+
 	my $randomvalue = Neurospaces::Components::Randomvalue->new();
 
 	$randomvalue->set_name($self->{xml_simple}->{properties}->{random}->{reference});
 
-	#t figure out why the randomvalue was needed
+	my $result_insert_private = $self->{model_container}->insert_private($randomvalue);
 
-	$result = $fiber->insert($randomvalue);
-
-	if ($result)
+	if ($result_insert_private)
 	{
-	    return $result;
+	    return $result_insert_private;
+	}
+
+	# and link it with the spike generator
+
+	my $result_alias = $randomvalue->alias(undef, $self->{xml_simple}->{properties}->{random}->{reference}, "randomvalue", "Neurospaces::Components::Randomvalue");
+
+	if (! ref $result_alias)
+	{
+	    return $result_alias;
+	}
+
+	my $result_child = $fiber->insert($result_alias);
+
+	if ($result_child)
+	{
+	    return $result_child;
 	}
 
     }

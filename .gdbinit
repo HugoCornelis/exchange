@@ -1,7 +1,7 @@
 set env NEUROSPACES_NMC_MODELS = /local_home/hugo/neurospaces_project/exchange/source/snapshots/0/library
 # set env NEUROSPACES_NMC_PROJECT_MODELS = /local_home/local_home/hugo/EM/models
-set args bin/neurospaces_exchange library/GranuleCell_NeuroML/Granule_98.morph.xml
-set args bin/neurospaces_exchange library/NineML/poissonianSpiker.xml
+set args bin/neurospaces_exchange library/GranuleCell_NeuroML/Granule_98.morph.xml --yaml-stdout --commands 'export no ndf STDOUT /**'
+set args bin/neurospaces_exchange library/NineML/poissonianSpiker.xml --yaml-stdout --commands 'export no ndf STDOUT /**'
 file /usr/bin/perl
 # break parsererror
 echo .gdbinit: Done .gdbinit\n

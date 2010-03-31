@@ -273,7 +273,7 @@ sub is_neuroml
 {
     my $self = shift;
 
-    return $self->{xml_simple}->{"xsi:schemaLocation"} =~ /neuroml/i;
+    return (defined $self->{xml_simple}->{"xsi:schemaLocation"}) and ($self->{xml_simple}->{"xsi:schemaLocation"} =~ /neuroml/i);
 }
 
 

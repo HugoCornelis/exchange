@@ -251,6 +251,8 @@ sub convert
 
 	$randomvalue->set_name($self->{xml_simple}->{properties}->{random}->{reference});
 
+	$randomvalue->set_parameter_double("RANDOMSEED", $parser_random->{xml_simple}->{properties}->{seed});
+
 	my $result_insert_private = $self->{model_container}->insert_private($randomvalue);
 
 	if ($result_insert_private)

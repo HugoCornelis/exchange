@@ -238,12 +238,12 @@ sub convert
 
 	my $parser_random = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
 
-# 	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
+	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
 
-# 	if ($parser_random_error)
-# 	{
-# 	    return "cannot parse random number generator ($parser_random_error)";
-# 	}
+	if ($parser_random_error)
+	{
+	    return "cannot parse random number generator ($parser_random_error)";
+	}
 
 	my $randomvalue = Neurospaces::Components::Randomvalue->new();
 
@@ -326,15 +326,28 @@ sub read
 
     my $options = shift || {};
 
-    $self->{filename} = $filename;
+    if ($filename !~ /\.xml$/)
+    {
+	$filename .= ".xml";
+    }
 
     my $qualified_filename = $self->qualify($filename);
 
-    $self->{qualified_filename} = $qualified_filename;
+    if (!$qualified_filename)
+    {
+	return "cannot qualify $filename (not found?)";
+    }
+
+    push @{$self->{filename}}, $filename;
+
+    push @{$self->{qualified_filename}}, $qualified_filename;
 
 #     $self->{xml_twig}->parsefile($qualified_filename);
 
-    $self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
+#     eval
+    {
+	$self->{xml_simple} = XML::Simple::XMLin($qualified_filename);
+    };
 
     if ($options->{verbose}
 	|| $options->{yaml_stdout})

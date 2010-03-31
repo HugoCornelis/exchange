@@ -6,7 +6,7 @@
       <unit>Hz</unit>
     </rate>
     <random>
-      <reference>RNG</reference>
+      <reference>NineML/RNG</reference>
     </random>
   </properties>
   <note><text>Poisson input (page 185)</text></note>

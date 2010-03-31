@@ -25,7 +25,7 @@ note:
   text: Poisson input (page 185)
 properties:
   random:
-    reference: RNG
+    reference: NineML/RNG
   rate:
     unit: Hz
     value: 10
@@ -49,7 +49,7 @@ PUBLIC_MODELS
     PARAMETERS
       PARAMETER ( RATE = 10 ),
     END PARAMETERS
-    RANDOMVALUE RNG
+    RANDOMVALUE NineML/RNG
     END RANDOMVALUE
   END FIBER
 END PUBLIC_MODELS

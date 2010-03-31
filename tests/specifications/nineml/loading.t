@@ -33,8 +33,7 @@ properties:
 						  },
 						  {
 						   description => "Is the exported NDF valid?",
-						   read => '
-#!neurospacesparse
+						   read => '#!neurospacesparse
 // -*- NEUROSPACES -*-
 
 NEUROSPACES NDF

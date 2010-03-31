@@ -238,12 +238,12 @@ sub convert
 
 	my $parser_random = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
 
-	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
+# 	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
 
-	if ($parser_random_error)
-	{
-	    return "cannot parse random number generator ($parser_random_error)";
-	}
+# 	if ($parser_random_error)
+# 	{
+# 	    return "cannot parse random number generator ($parser_random_error)";
+# 	}
 
 	my $randomvalue = Neurospaces::Components::Randomvalue->new();
 

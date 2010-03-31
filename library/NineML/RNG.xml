@@ -1,0 +1,6 @@
+<node name="RNG">
+  <definition><url>http://www.nineml.org/tools/random.xml</url></definition>
+  <properties>
+    <seed>452145</seed>
+  </properties>
+</node>

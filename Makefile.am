@@ -29,6 +29,10 @@ RELEASE_MICRO=`release-extract --micro`
 clean-local:
 	$(RM) -rf $(top_srcdir)/docs/html
 	$(RM) -rf $(top_srcdir)/tests/html
+	$(RM) -rf $(top_srcdir)/*.deb
+	$(RM) -rf $(top_srcdir)/*.dsc
+	$(RM) -rf $(top_srcdir)/*.changes
+	$(RM) -f $(top_srcdir)/build_debian.log
 
 show-release-labels:
 	echo "Release information (major-minor-micro): $(RELEASE_MAJOR)-$(RELEASE_MINOR)-$(RELEASE_MICRO)"
@@ -84,8 +88,17 @@ docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 do
 
 TESTS = $(srcdir)/tests/neurospaces_harness
 
+#-------------------------------------------------------
+# Packaging
+# the pkg-src target must create pkg/$(APP_NAME)-$(VERSION).tar.gz
 TMP_DIR = tmp
 
+pkg-src: dist
+	mkdir -p pkg
+	cp $(PACKAGE)-$(VERSION).tar.gz pkg/$(PACKAGE)-$(VERSION).tar.gz
+
 # Create a deb package
-pkg-deb: dist
+pkg-deb: pkg-src
 	nspkg-deb $(TMP_DIR) $(PACKAGE) $(VERSION)
+
+#--- end packaging --------------------------------------

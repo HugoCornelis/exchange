@@ -20,3 +20,7 @@ Makefile\.in$
 ^tests/results
 _Inline
 gz$
+\.deb$
+\.changes$
+\.dsc$
+\.log$

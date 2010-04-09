@@ -1,0 +1,12 @@
+Source: exchange
+Section: Science 
+Priority: optional
+Maintainer: Hugo Cornelis [hugo.cornelis@gmail.com]
+Build-Depends: python2.5(>=2.5),libc6(>=2.3.6),libgcc1 (>=4.1.1)
+Homepage: http://www.neurospaces.org
+
+Package: exchange
+Architecture: any
+Depends: python2.5(>=2.5),libc6(>=2.3.6),libgcc1 (>=4.1.1)
+Suggests: gnuplot
+Description: A perl interface to allow GENESIS to work with 9ml.

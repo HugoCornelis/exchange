@@ -1,0 +1,21 @@
+$files = {
+           '_<./command_extractor' => [
+                                        {
+                                          'expr' => undef,
+                                          'value' => '1',
+                                          'text' => '		      if ($top->{type} eq \'SCALAR\'
+',
+                                          'fname' => './command_extractor',
+                                          'type' => 'user',
+                                          'line' => '109'
+                                        }
+                                      ]
+         };
+$expr_list = [
+               {
+                 'expr' => '$top->{content}',
+                 'depth' => -1
+               }
+             ];
+$eval_saved_text = undef;
+$main_win_geometry = '1140x985+442+48';

@@ -1,0 +1,240 @@
+#!/usr/bin/perl -w
+#!/usr/bin/perl -d:ptkdb
+#
+# $Id: command_extractor 1.3 Wed, 26 Dec 2007 21:42:57 -0600 hugo $
+#
+
+use strict;
+
+
+our $neurospaces_core_directory;
+
+# our $neurospaces_perl_modules;
+
+our $neurospaces_tests;
+
+
+BEGIN
+{
+    use Cwd ();
+
+    my $dir = Cwd::getcwd();
+
+    # get abs path where this script is located
+
+    $neurospaces_tests = $dir . '/' . $0;
+
+    print "dir is $dir, 0 is $0\n";
+
+    # get dir where the test library can be found
+
+    $neurospaces_tests =~ s((.*)/.*)($1/library);
+
+    $neurospaces_tests =~ s([^/]+/\.\./)()g;
+
+    $neurospaces_tests =~ s(\./)()g;
+
+    print "neurospaces_tests is $neurospaces_tests\n";
+
+    # add to include paths
+
+    unshift @INC, $neurospaces_tests;
+
+    # find the Neurospaces c core directory
+
+    $neurospaces_core_directory = $neurospaces_tests;
+
+    $neurospaces_core_directory =~ s((.*)/tests/library$)($1);
+
+#     $neurospaces_perl_modules = $neurospaces_core_directory;
+
+#     # find the Neurospaces perl modules directory
+
+#     $neurospaces_perl_modules .= "/perl";
+
+#     # add to include path
+
+#     unshift @INC, $neurospaces_perl_modules;
+}
+
+
+use Data::Comparator qw(data_comparator);
+use Data::Transformator;
+
+use Getopt::Long;
+
+
+my $option_command;
+my $option_help;
+my $option_regex_selector = ".*";
+my $option_verbose;
+
+
+sub main
+{
+    read_cmd_line();
+
+    my $result = {};
+
+    my $test_modules = test_library_construct();
+
+    foreach my $test_module (@$test_modules)
+    {
+	if ($test_module !~ /$option_regex_selector/i)
+	{
+	    next;
+	}
+
+	if ($option_verbose)
+	{
+	    report_message(2, 1, "Reading module $test_module");
+	}
+
+	my $module_definition = do $test_module;
+
+	my $transformator
+	    = Data::Transformator->new
+		(
+#  		 apply_identity_transformation => 1,
+		 name => 'Neurospaces test information extractor',
+		 separator => '`',
+		 transformators =>
+		 [
+		  sub
+		  {
+		      my ($transform_data, $context, $component) = @_;
+
+		      my $top = Data::Transformator::_context_get_current($context);
+
+		      #t I think that this does not always work
+		      #t properly, because the separator is sometimes
+		      #t used in the content strings ?
+
+		      if ($top->{type} eq 'SCALAR'
+			  && $top->{content} =~ /$option_command/)
+		      {
+			  my $path = $context->{path};
+
+			  $path =~ s/(.*)\`/$1/;
+
+			  $result->{$test_module}->{$path} = 1;
+		      }
+		  },
+		 ],
+		);
+
+	my $data = $transformator->transform($module_definition);
+
+# 	if (defined $data && %$data)
+# 	{
+# 	    $result->{$test_module} = $data->{content};
+# 	}
+    }
+
+#     use YAML;
+
+#     print Dump($result);
+
+    use Data::Dumper;
+
+    print Dumper($result);
+}
+
+
+sub read_cmd_line
+{
+    my $result
+	= GetOptions
+	    (
+	     "command=s" => \$option_command,
+	     "help!" => \$option_help,
+	     "regex-selector=s" => \$option_regex_selector,
+	     "v|verbose+" => \$option_verbose,
+	    );
+
+    if (!$option_command)
+    {
+	$option_help = 1;
+    }
+
+    if ($option_help)
+    {
+	print
+	    "
+$0: neurospaces test information extractor
+
+options :
+    command         command to print usage for.
+    help            print usage information.
+    regex-selector  defines a regex to run specific tests.
+    verbose         set verbosity level.
+";
+
+	exit 1;
+    }
+
+}
+
+
+sub report_message
+{
+    my $header = shift;
+
+    my $trailer = shift;
+
+    my $message = shift;
+
+    my $lines = [ split '\n', $message, ];
+
+    my $longest = 0;
+
+    map
+    {
+	($longest < length) && ($longest = length)
+    }
+	@$lines;
+
+    my $line = '-' x $longest;
+
+    print "\n";
+    print "$line\n" for 0 .. $header;
+    print "\n";
+    print "$message\n\n";
+    print "$line\n" for 0 .. $trailer;
+    print "\n";
+}
+
+
+sub test_library_construct
+{
+    # define the tests
+
+    my $additional_test_modules
+	= [
+	  ];
+
+    my $program_name = $0;
+
+    $program_name =~ s/.*\///;
+
+    my $library = $0;
+
+    $library =~ s/$program_name$/specifications/;
+
+    my $test_modules
+	= [
+	   @$additional_test_modules,
+	   map
+	   {
+	       chomp; $_;
+	   }
+	   `find $library -name "*.t"`,
+	  ];
+
+    return $test_modules;
+}
+
+
+main();
+
+

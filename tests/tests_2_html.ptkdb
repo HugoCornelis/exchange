@@ -1,0 +1,16 @@
+$files = {
+           '_<./tests_2_html' => [
+                                   {
+                                     'expr' => undef,
+                                     'value' => '1',
+                                     'text' => '    output_content
+',
+                                     'fname' => './tests_2_html',
+                                     'type' => 'user',
+                                     'line' => '638'
+                                   }
+                                 ]
+         };
+$expr_list = [];
+$eval_saved_text = undef;
+$main_win_geometry = '1272x941+0+0';

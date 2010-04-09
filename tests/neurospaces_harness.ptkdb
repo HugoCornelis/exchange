@@ -1,0 +1,38 @@
+$files = {
+           '_<tests/neurospaces_harness' => [
+                                              {
+                                                'expr' => undef,
+                                                'value' => '1',
+                                                'text' => '		if ($command_test->{disabled})
+',
+                                                'fname' => 'tests/neurospaces_harness',
+                                                'type' => 'user',
+                                                'line' => '530'
+                                              },
+                                              {
+                                                'expr' => undef,
+                                                'value' => '1',
+                                                'text' => '    read_cmd_line();
+',
+                                                'fname' => 'tests/neurospaces_harness',
+                                                'type' => 'user',
+                                                'line' => '248'
+                                              }
+                                            ]
+         };
+$expr_list = [
+               {
+                 'expr' => '$path',
+                 'depth' => -1
+               },
+               {
+                 'expr' => '$context->{path}',
+                 'depth' => -1
+               },
+               {
+                 'expr' => '$context->{array}->[1]->{content}->{name}',
+                 'depth' => -1
+               }
+             ];
+$eval_saved_text = undef;
+$main_win_geometry = '1592x1114+0+0';

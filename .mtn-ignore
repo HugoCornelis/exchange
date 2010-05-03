@@ -1,8 +1,4 @@
-.changes$
-.deb$
-.dsc$
-.log$
-.zip$
+\.zip$
 Makefile$
 Makefile\.in$
 ^aclocal.m4$

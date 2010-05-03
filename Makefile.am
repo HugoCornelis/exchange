@@ -51,7 +51,7 @@ dist-hook: dist-keywords
 #	cp -R $(srcdir)/docs $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
-	cp -dp $(srcdir)/tests/{neurospaces_harness,neurospaces_harness.ptkdb,command_extractor,command_extractor.ptkdb,tests_2_html,tests_2_html.ptkdb,tests.config} $(distdir)/tests
+	cp -dp $(srcdir)/tests/{command_extractor,command_extractor.ptkdb,tests_2_html,tests_2_html.ptkdb,tests.config} $(distdir)/tests
 	cp -a $(srcdir)/tests.config $(distdir)
 	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
 
@@ -86,7 +86,7 @@ docs-level7:
 
 docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 docs-level7
 
-TESTS = $(srcdir)/tests/neurospaces_harness
+TESTS = /usr/local/bin/neurospaces_harness
 
 #-------------------------------------------------------
 # Packaging

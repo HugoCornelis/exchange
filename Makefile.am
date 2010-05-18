@@ -33,6 +33,9 @@ clean-local:
 	$(RM) -rf $(top_srcdir)/*.dsc
 	$(RM) -rf $(top_srcdir)/*.changes
 	$(RM) -f $(top_srcdir)/build_debian.log
+	$(RM) -f exchange*.tar.gz
+	$(RM) -rf RPM_BUILD/
+	$(RM) -f build_rpm.log
 
 show-release-labels:
 	echo "Release information (major-minor-micro): $(RELEASE_MAJOR)-$(RELEASE_MINOR)-$(RELEASE_MICRO)"

@@ -38,10 +38,10 @@ clean-local:
 	$(RM) -f build_rpm.log
 
 show-release-labels:
-	echo "Release information (major-minor-micro): $(RELEASE_MAJOR)-$(RELEASE_MINOR)-$(RELEASE_MICRO)"
+	echo "Release information (major-minor-micro): $(RELEASE_MAJOR).$(RELEASE_MINOR)-$(RELEASE_MICRO)"
 
 dist-keywords:
-	release-expand exchange $(RELEASE_MAJOR) $(RELEASE_MINOR) $(RELEASE_MICRO) $(RELEASE_MAJOR)-$(RELEASE_MINOR) hugo.cornelis@gmail.com --verbose
+	release-expand exchange $(RELEASE_MAJOR) $(RELEASE_MINOR) $(RELEASE_MICRO) $(RELEASE_MAJOR).$(RELEASE_MINOR) hugo.cornelis@gmail.com --verbose
 #	release-expand exchange des 10 0 des-10 hugo.cornelis@gmail.com --verbose
 
 am__tar = ${AMTAR} chf - --format=posix "$$tardir"
@@ -103,5 +103,8 @@ pkg-src: dist
 # Create a deb package
 pkg-deb: pkg-src
 	nspkg-deb $(TMP_DIR) $(PACKAGE) $(VERSION)
+
+pkg-rpm: dist
+	nspkg-rpm $(PACKAGE) $(VERSION)
 
 #--- end packaging --------------------------------------

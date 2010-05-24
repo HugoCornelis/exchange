@@ -17,7 +17,7 @@ dnl ##########################################################################
 
 AC_PREREQ(2.59)
 
-# $Format: "AC_INIT(${package}, ${label}, ${email})"$
+# $Format: "AC_INIT(${package}, ${major}.${minor}.${micro}-${label}, ${email})"$
 AC_INIT(exchange, prealpha-1, hugo.cornelis@gmail.com)
 
 AC_CONFIG_SRCDIR([Makefile.am])
@@ -26,7 +26,7 @@ dnl dnl all subdirs
 
 dnl AC_CONFIG_SUBDIRS()
 
-# $Format: "AM_INIT_AUTOMAKE(${package}, ${label})"$
+# $Format: "AM_INIT_AUTOMAKE(${package}, ${major}.${minor}.${micro}-${label})"$
 AM_INIT_AUTOMAKE(exchange, prealpha-1)
 
 PERL_MODULES=`(cd perl && find . -name "*.pm" | perl -pe 's/\n/ /g')`

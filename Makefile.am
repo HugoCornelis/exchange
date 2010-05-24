@@ -46,7 +46,7 @@ dist-keywords:
 
 am__tar = ${AMTAR} chf - --format=posix "$$tardir"
 
-dist-hook: dist-keywords
+dist-hook: 
 #	cd $(srcdir) && if test -n "`mtn ls changed `" ; then false ; else true ; fi
 	find $(distdir) -name _Inline -exec chmod u+w -R \{\} \;
 	$(RM) -fr `find $(distdir) -name _Inline`

@@ -54,7 +54,11 @@ dist-hook:
 #	cp -R $(srcdir)/docs $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
-	cp -dp $(srcdir)/tests/{command_extractor,command_extractor.ptkdb,tests_2_html,tests_2_html.ptkdb,tests.config} $(distdir)/tests
+	cp -a $(srcdir)/tests/command_extractor $(distdir)/tests
+	cp -a $(srcdir)/tests/command_extractor.ptkdb $(distdir)/tests
+	cp -a $(srcdir)/tests/tests_2_html $(distdir)/tests
+	cp -a $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
+	cp -a $(srcdir)/tests/tests.config $(distdir)/tests
 	cp -a $(srcdir)/tests.config $(distdir)
 	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
 

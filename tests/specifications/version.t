@@ -15,9 +15,9 @@ my $test
 				command_tests => [
 						  {
 						   # $Format: "description => \"Does the version information match with ${package}-${label} ?\","$
-description => "Does the version information match with exchange-prealpha-1 ?",
+description => "Does the version information match with exchange-alpha ?",
 						   # $Format: "read => \"${package}-${label}\","$
-read => "exchange-prealpha-1",
+read => "exchange-alpha",
 # 						   write => "version",
 						  },
 						 ],

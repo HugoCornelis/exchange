@@ -33,6 +33,8 @@ Group: 			Science
 Vendor: 		Hugo Cornelis <hugo.cornelis@gmail.com>
 Packager: 		Mando Rodriguez <mandorodriguez@gmail.com>
 URL:			http://www.neurospaces.org
+AutoReqProv:		no
+
 
 %description
  A perl interface to allow GENESIS to work with 9ml.

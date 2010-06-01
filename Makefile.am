@@ -54,12 +54,12 @@ dist-hook:
 #	cp -R $(srcdir)/docs $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
-	cp -a $(srcdir)/tests/command_extractor $(distdir)/tests
-	cp -a $(srcdir)/tests/command_extractor.ptkdb $(distdir)/tests
-	cp -a $(srcdir)/tests/tests_2_html $(distdir)/tests
-	cp -a $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
-	cp -a $(srcdir)/tests/tests.config $(distdir)/tests
-	cp -a $(srcdir)/tests.config $(distdir)
+	cp -pR $(srcdir)/tests/command_extractor $(distdir)/tests
+	cp -pR $(srcdir)/tests/command_extractor.ptkdb $(distdir)/tests
+	cp -pR $(srcdir)/tests/tests_2_html $(distdir)/tests
+	cp -pR $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
+	cp -pR $(srcdir)/tests/tests.config $(distdir)/tests
+	cp -pR $(srcdir)/tests.config $(distdir)
 	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
 
 html-upload-prepare:

@@ -296,6 +296,10 @@ sub convert
 		return $result_child;
 	    }
 	}
+	else
+	{
+	    return "random element without a reference in $self->{xml_simple}->{name}";
+	}
     }
 
     # return result: error message

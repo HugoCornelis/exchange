@@ -1,0 +1,81 @@
+<nodes>
+  <node name="RNG">
+    <definition><url>http://www.neuML.org/tools/random.xml</url></definition>
+    <properties>
+      <seed>unclear</seed>
+    </properties>
+    <note><txt>We have no idea which RNG Brunel was using</txt></note>
+  </node>
+  <node name="E">
+    <definition><url>http://www.neuML.org/neurons/IaF_tau.xml</url></definition>
+    <properties>
+      <membraneConstant>
+        <value>20</value>
+        <unit>ms</unit>
+      </membraneConstant>
+      <threshold>
+        <value>20</value>
+        <unit>mV</unit>
+      </threshold>
+      <refractoryTime>
+        <value>2</value>
+        <unit>ms</unit>
+      </refractoryTime>
+      <resetPotential>
+        <value>10</value>
+        <unit>mV</unit>
+      </resetPotential>
+    </properties>
+  </node>
+  <node name="I">
+    <reference>E</reference>
+  </node>
+  <node name="E_ext">
+    <definition><url>http://www.neuML.org/neurons/Poisson.xml</url></definition>
+    <properties>
+      <rate>
+        <value>unclear</value>
+        <unit>Hz</unit>
+      </rate>
+      <random>
+        <reference>RNG</reference>
+        </random>
+      </properties>
+  </node>
+  <node name="Excitatory">
+    <definition><url>http://www.neuML.org/synapses/Static.xml</url></definition>
+    <properties>
+      <weight>
+        <value>0.2</value>
+        </weight>
+      </properties>
+    </node>
+  <node name="Inhibitory">
+    <reference>Excitatory</reference>
+    <weight>
+      <value>node@name="Excitatory".weight.value*(-1)</value>
+    </weight>
+  </node>
+  <node name="Delta PSR">
+    <definition><url>http://www.neuML.org/PSRs/Delta.xml</url></definition>
+  </node>
+  <node name="excitation">
+    <definition><url>http://www.neuML.org/connections/NBRP.xml</url></definition>
+    <properties>
+      <number>
+        <value>1000</value>
+      </number>
+      <direction>convergent</direction>
+      <delay>
+        <value>2</value>
+        <unit>ms</unit>
+      </delay>
+    </properties>
+  </node>
+  <node name="inhibition">
+    <reference>excitation</reference>
+    <number>
+    <value>250</value>
+    </number>
+  </node>
+</nodes>

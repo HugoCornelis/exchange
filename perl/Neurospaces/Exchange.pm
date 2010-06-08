@@ -233,6 +233,36 @@ sub convert
 						       },
 	  };
 
+    if ($self->{xml_simple}->{import}->{url})
+    {
+	my $urls
+	    = (
+	       $self->{xml_simple}->{import}->{url} =~ /ARRAY/
+	       ? $self->{xml_simple}->{import}->{url}
+	       : [ $self->{xml_simple}->{import}->{url}, ]
+	      );
+
+	foreach my $url (@$urls)
+	{
+	    my $parser_url = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
+
+	    my $parser_url_error = $parser_url->read($url);
+
+	    if ($parser_url_error)
+	    {
+		if ($url =~ s(^file://./)(NineML/))
+		{
+		    $parser_url_error = $parser_url->read($url);
+		}
+	    }
+
+	    if ($parser_url_error)
+	    {
+		return "cannot parse url $url ($parser_url_error)";
+	    }
+	}
+    }
+
     if ($self->{xml_simple}->{definition}->{url} eq 'http://www.nineml.org/neurons/Poisson.xml')
     {
 	my $fiber = Neurospaces::Components::Fiber->new();

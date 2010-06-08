@@ -1,0 +1,44 @@
+<network>
+<import><url>file://./BrunelNodesA.xml</url></import>
+<group name="Network">
+  <component name="Exc">
+    <reference>E</reference>
+    <structure>unstructured</structure>
+    <number>10000</number>
+  </component>
+  <component name="Inh">
+    <reference>I</reference>
+    <structure>unstructured</structure>
+    <number>2500</number>
+  </component>
+  <component name="Ext">
+    <reference>E_ext</reference>
+    <structure>unstructured</structure>
+    <number>component[@name="Exc"].number+component[@name="Inh"].number</number>
+  </component>
+  <set name="All neurons">
+    <select>component[@name="Inh"|"Exc"]</select>
+  </set>
+  <projection name="External" >
+    <source>E_ext</source>
+    <target>All neurons</target>
+    <synapse>Excitatory</synapse>
+    <response>Delta PSR</response>
+    <rule>input</rule>
+  </projection>
+  <projection name="Excitation" >
+    <source>Exc</source>
+    <target>All neurons</target>
+    <synapse>Excitatory</synapse>
+    <response>Delta PSR</response>
+    <rule>excitation</rule>
+  </projection>
+  <projection name="Inhibition" >
+    <source>Inh</source>
+    <target>All Neurons</target>
+    <synapse>Inhibitory</synapse>
+    <response>Delta PSR</response>
+    <rule>inhibition</rule>
+  </projection>
+</group>
+</network>

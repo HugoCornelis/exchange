@@ -217,6 +217,22 @@ sub convert
 
     my $options = shift;
 
+    my $element_mapping
+	= {
+	   'http://www.nineml.org/neurons/Poisson.xml' => {
+							   package => 'Neurospaces::Components::Fiber',
+							   properties => {
+									  rate => 'RATE',
+									 },
+							  },
+	   'http://www.nineml.org/tools/random.xml' => {
+							package => 'Neurospaces::Components::Randomvalue',
+							properties => {
+								       seed => 'RANDOMSEED',
+								      },
+						       },
+	  };
+
     if ($self->{xml_simple}->{definition}->{url} eq 'http://www.nineml.org/neurons/Poisson.xml')
     {
 	my $fiber = Neurospaces::Components::Fiber->new();
@@ -238,44 +254,48 @@ sub convert
 
 	my $parser_random = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
 
-	my $parser_random_error = $parser_random->read($self->{xml_simple}->{properties}->{random}->{reference});
-
-	if ($parser_random_error)
+	if ($self->{xml_simple}->{properties}->{random}->{reference})
 	{
-	    return "cannot parse random number generator ($parser_random_error)";
+	    my $reference = $self->{xml_simple}->{properties}->{random}->{reference};
+
+	    my $parser_random_error = $parser_random->read($reference);
+
+	    if ($parser_random_error)
+	    {
+		return "cannot parse random number generator ($parser_random_error)";
+	    }
+
+	    # insert the randomvalue as a private model
+
+	    my $randomvalue = Neurospaces::Components::Randomvalue->new();
+
+	    $randomvalue->set_name($reference);
+
+	    $randomvalue->set_parameter_double("RANDOMSEED", $parser_random->{xml_simple}->{properties}->{seed});
+
+	    my $result_insert_private = $self->{model_container}->insert_private($randomvalue);
+
+	    if ($result_insert_private)
+	    {
+		return $result_insert_private;
+	    }
+
+	    # and link it with the spike generator
+
+	    my $result_alias = $randomvalue->alias(undef, $reference, "randomvalue", "Neurospaces::Components::Randomvalue");
+
+	    if (! ref $result_alias)
+	    {
+		return $result_alias;
+	    }
+
+	    my $result_child = $fiber->insert($result_alias);
+
+	    if ($result_child)
+	    {
+		return $result_child;
+	    }
 	}
-
-	# insert the randomvalue as a private model
-
-	my $randomvalue = Neurospaces::Components::Randomvalue->new();
-
-	$randomvalue->set_name($self->{xml_simple}->{properties}->{random}->{reference});
-
-	$randomvalue->set_parameter_double("RANDOMSEED", $parser_random->{xml_simple}->{properties}->{seed});
-
-	my $result_insert_private = $self->{model_container}->insert_private($randomvalue);
-
-	if ($result_insert_private)
-	{
-	    return $result_insert_private;
-	}
-
-	# and link it with the spike generator
-
-	my $result_alias = $randomvalue->alias(undef, $self->{xml_simple}->{properties}->{random}->{reference}, "randomvalue", "Neurospaces::Components::Randomvalue");
-
-	if (! ref $result_alias)
-	{
-	    return $result_alias;
-	}
-
-	my $result_child = $fiber->insert($result_alias);
-
-	if ($result_child)
-	{
-	    return $result_child;
-	}
-
     }
 
     # return result: error message

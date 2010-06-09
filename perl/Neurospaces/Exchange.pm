@@ -239,7 +239,7 @@ sub convert
 	    = (
 	       $self->{xml_simple}->{import}->{url} =~ /ARRAY/
 	       ? $self->{xml_simple}->{import}->{url}
-	       : [ $self->{xml_simple}->{import}->{url}, ]
+	       : [ $self->{xml_simple}->{import}->{url}, ],
 	      );
 
 	foreach my $url (@$urls)
@@ -260,6 +260,34 @@ sub convert
 	    {
 		return "cannot parse url $url ($parser_url_error)";
 	    }
+	}
+    }
+
+    if ($self->{xml_simple}->{node})
+    {
+	# note that the yaml contains nodes converted to a hash by their name
+
+	my $nodes = $self->{xml_simple}->{node};
+
+	my $node_count = scalar keys %$nodes;
+
+	foreach my $node_name (sort keys %$nodes)
+	{
+	    my $node = $nodes->{$node_name};
+
+	    print "$node_name\n";
+
+	    # if it is a reference
+
+	    if ($node->{reference})
+	    {
+		if (not $nodes->{$node->{reference}}->{done})
+		{
+		    $self->convert_node($nodes->{$node->{reference}}, $nodes->{$node->{reference}});
+		}
+	    }
+
+	    $self->convert_node($node_name, $node);
 	}
     }
 
@@ -335,6 +363,98 @@ sub convert
     # return result: error message
 
     return undef;
+}
+
+
+sub convert_node
+{
+    my $self = shift;
+
+    my $node_name = shift;
+
+    my $node = shift;
+
+    # obtain a reference to the nodes definition through following the references
+
+    my $definition = $node->{definition};
+
+    if ($node->{definition}->{url} eq 'http://www.nineml.org/PSRs/Delta.xml')
+    {
+		
+    }
+
+    if ($self->{definition}->{url} eq 'http://www.nineml.org/neurons/Poisson.xml')
+    {
+	my $fiber = Neurospaces::Components::Fiber->new();
+
+	$fiber->set_name($self->{xml_simple}->{name});
+
+	my $result = $self->{model_container}->insert_public($fiber);
+
+	if ($result)
+	{
+	    return $result;
+	}
+
+	# set parameters of the fiber
+
+	$fiber->set_parameter_double("RATE", $self->{xml_simple}->{properties}->{rate}->{value});
+
+	# attach the random number generator
+
+	my $parser_random = Neurospaces::Exchange::Parser->new( { model_container => $self->{model_container}, }, );
+
+	if ($self->{xml_simple}->{properties}->{random}->{reference})
+	{
+	    my $reference = $self->{xml_simple}->{properties}->{random}->{reference};
+
+	    my $parser_random_error = $parser_random->read($reference);
+
+	    if ($parser_random_error)
+	    {
+		return "cannot parse random number generator ($parser_random_error)";
+	    }
+
+	    # insert the randomvalue as a private model
+
+	    my $randomvalue = Neurospaces::Components::Randomvalue->new();
+
+	    $randomvalue->set_name($reference);
+
+	    $randomvalue->set_parameter_double("RANDOMSEED", $parser_random->{xml_simple}->{properties}->{seed});
+
+	    my $result_insert_private = $self->{model_container}->insert_private($randomvalue);
+
+	    if ($result_insert_private)
+	    {
+		return $result_insert_private;
+	    }
+
+	    # and link it with the spike generator
+
+	    my $result_alias = $randomvalue->alias(undef, $reference, "randomvalue", "Neurospaces::Components::Randomvalue");
+
+	    if (! ref $result_alias)
+	    {
+		return $result_alias;
+	    }
+
+	    my $result_child = $fiber->insert($result_alias);
+
+	    if ($result_child)
+	    {
+		return $result_child;
+	    }
+	}
+	else
+	{
+	    return "random element without a reference in $self->{xml_simple}->{name}";
+	}
+    }
+
+    # flag this node as processed
+
+    $node->{done} = 1;
 }
 
 

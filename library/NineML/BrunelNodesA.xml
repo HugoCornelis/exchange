@@ -1,13 +1,13 @@
 <nodes>
   <node name="RNG">
-    <definition><url>http://www.neuML.org/tools/random.xml</url></definition>
+    <definition><url>http://www.nineml.org/tools/random.xml</url></definition>
     <properties>
       <seed>unclear</seed>
     </properties>
     <note><txt>We have no idea which RNG Brunel was using</txt></note>
   </node>
   <node name="E">
-    <definition><url>http://www.neuML.org/neurons/IaF_tau.xml</url></definition>
+    <definition><url>http://www.nineml.org/neurons/IaF_tau.xml</url></definition>
     <properties>
       <membraneConstant>
         <value>20</value>
@@ -31,7 +31,7 @@
     <reference>E</reference>
   </node>
   <node name="E_ext">
-    <definition><url>http://www.neuML.org/neurons/Poisson.xml</url></definition>
+    <definition><url>http://www.nineml.org/neurons/Poisson.xml</url></definition>
     <properties>
       <rate>
         <value>unclear</value>
@@ -43,7 +43,7 @@
       </properties>
   </node>
   <node name="Excitatory">
-    <definition><url>http://www.neuML.org/synapses/Static.xml</url></definition>
+    <definition><url>http://www.nineml.org/synapses/Static.xml</url></definition>
     <properties>
       <weight>
         <value>0.2</value>
@@ -57,10 +57,10 @@
     </weight>
   </node>
   <node name="Delta PSR">
-    <definition><url>http://www.neuML.org/PSRs/Delta.xml</url></definition>
+    <definition><url>http://www.nineml.org/PSRs/Delta.xml</url></definition>
   </node>
   <node name="excitation">
-    <definition><url>http://www.neuML.org/connections/NBRP.xml</url></definition>
+    <definition><url>http://www.nineml.org/connections/NBRP.xml</url></definition>
     <properties>
       <number>
         <value>1000</value>

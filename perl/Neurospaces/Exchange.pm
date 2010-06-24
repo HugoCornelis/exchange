@@ -219,6 +219,12 @@ sub convert
 
     my $element_mapping
 	= {
+# 	   'http://www.nineml.org/neurons/IaF_tau.xml' => {
+# 							   package => 'Neurospaces::Components::Segment::IaF_tau',
+# 							   properties => {
+# 									  membraneConstant => 'TAU',
+# 									 },
+# 							  },
 	   'http://www.nineml.org/neurons/Poisson.xml' => {
 							   package => 'Neurospaces::Components::Fiber',
 							   properties => {

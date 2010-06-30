@@ -107,7 +107,7 @@ pkg-src: dist
 
 # Create a deb package
 pkg-deb: pkg-src
-	nspkg-deb $(TMP_DIR) $(PACKAGE) $(VERSION)
+	nspkg-deb $(PACKAGE) $(VERSION)
 
 pkg-rpm: dist
 	nspkg-rpm $(PACKAGE) $(VERSION)

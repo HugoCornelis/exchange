@@ -29,6 +29,31 @@ dnl AC_CONFIG_SUBDIRS()
 # $Format: "AM_INIT_AUTOMAKE(${package}, ${major}.${minor}.${micro}-${label})"$
 AM_INIT_AUTOMAKE(exchange, 0.0.0-alpha)
 
+
+AC_MSG_CHECKING(whether we build universal binaries.)
+AC_ARG_WITH(universal,
+[AS_HELP_STRING([--with-universal],
+              [Build universal binaries on Mac OS X.])],
+[ case "$val" in
+  no)
+
+    AC_MSG_RESULT(no)
+    OSX_UNIVERSAL="no"
+
+    ;;
+  *)
+
+    AC_MSG_RESULT(yes)
+    OSX_UNIVERSAL="yes"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  OSX_UNIVERSAL="no"
+)
+AC_SUBST(OSX_UNIVERSAL)
+
+
 PERL_MODULES=`(cd perl && find . -name "*.pm" | perl -pe 's/\n/ /g')`
 AC_SUBST(PERL_MODULES)
 

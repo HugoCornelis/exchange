@@ -20,6 +20,9 @@ AC_PREREQ(2.59)
 # $Format: "AC_INIT(${package}, ${major}.${minor}.${micro}-${label}, ${email})"$
 AC_INIT(exchange, 0.0.0-alpha, hugo.cornelis@gmail.com)
 
+dnl Obtain operating system information.
+AC_CANONICAL_TARGET
+
 AC_CONFIG_SRCDIR([Makefile.am])
 
 dnl dnl all subdirs
@@ -30,62 +33,82 @@ dnl AC_CONFIG_SUBDIRS()
 AM_INIT_AUTOMAKE(exchange, 0.0.0-alpha)
 
 
-# see https://metacpan.org/source/ASPIERS/Stow-v2.1.2/configure.ac
+AC_MSG_CHECKING([OS specifics...])
+AC_MSG_RESULT([Host is running $host_os.])
+dnl Here we'll select which version of perl to set up for
+dnl {{{
+case "$host_os" in
 
-dnl Check for perl on our system.
-dnl Call to AC_SUBST(PERL) is implicit
-AC_PATH_PROGS([PERL], [perl] [perl5], [false])
-if test "x$PERL" = xfalse
-then
-  AC_MSG_ERROR([Perl not found; check your \$PATH.])
-fi
- 
-# N.B. ${var#pattern} will not work with some shells, such as
-# Solaris 10's /bin/sh :-(
-#
-#   http://www.gnu.org/software/autoconf/manual/autoconf.html#Portable-Shell
-#
-#   eval `$PERL -V:siteprefix -V:installsitelib`
-#   pmdir_relative_path="${installsitelib#$siteprefix/}"
-#
-# This will work:
-#
-#   pmdir_relative_path=`echo "${installsitelib}" | sed -e "s!^$siteprefix/!!"`
-#
-# but this is cleaner:
-pmdir_relative_path=`\
-  $PERL -MConfig \
+  darwin*)
+    dnl On the MAC we will only look for perl in the standard location for the Apple
+    dnl native perl. 
+    AC_CHECK_PROG(PERL, perl, NULL, [/usr/bin/perl],[/usr/local/bin/perl /opt/local/bin/perl])
+    AC_SUBST(PERL)
+
+    AC_MSG_CHECKING([Checking the perl installation])
+    case $PERL in
+      NULL*)
+        echo ""
+        echo "Error, the standard version of perl for Mac OSX is not found."
+        echo "Non standard versions of perl are known to cause problems."
+        AC_ERROR([Perl for Mac OSX is not found.])
+        ;;
+      *)
+        AC_MSG_RESULT([ $PERL ])
+        ;;
+    esac
+
+
+    #-- Here we determine the install path for perl modules --
+    AC_MSG_CHECKING([Checking the perl module installation path])	
+    pmdir_relative_path=`\
+      $PERL -MConfig \
         -wle '($_ = $Config{installsitelib})
               =~ s!^\Q$Config{siteprefix}/!!; \
               print'`
  
-AC_ARG_WITH(
-    [pmdir],
+    AC_ARG_WITH(
+      [pmdir],
     AS_HELP_STRING(
       [--with-pmdir=DIR],
       [Install Perl modules in DIR]),
-    [PMDIR=${withval}],
-    [PMDIR='${prefix}'/"$pmdir_relative_path"])
-AC_CONFIG_COMMANDS_POST([[
-  eval pmdir="$PMDIR"
-  cat <<EOF
+      [PMDIR=${withval}],
+      [PMDIR="$pmdir_relative_path"])
+
+    AC_SUBST([PMDIR])
+    AC_MSG_RESULT([ $PMDIR ])
+    # --- End perl module directory selection --------------
+  ;;
+
+  *)
+
+    dnl Check for some needed programs.
+    AC_CHECK_PROGS(PERL, perl5 perl)
+    AC_SUBST(PERL)
+
+    #-- Here we determine the install path for perl modules --
+    AC_MSG_CHECKING([Checking the perl module installation path])	
+    pmdir_relative_path=`\
+      $PERL -MConfig \
+        -wle '($_ = $Config{installsitelib})
+              =~ s!^\Q$Config{siteprefix}/!!; \
+              print'`
  
-# Perl modules will be installed to $PMDIR
-EOF
-  if [ "$pmdir" != "$PMDIR" ]; then
-    cat <<EOF
-# which will expand to
-#
-#   $pmdir
-#
-# unless you override the value of prefix at make-time.
-EOF
-    echo
-  fi
-]])
-AC_SUBST([PMDIR])
+    AC_ARG_WITH(
+      [pmdir],
+    AS_HELP_STRING(
+      [--with-pmdir=DIR],
+      [Install Perl modules in DIR]),
+      [PMDIR=${withval}],
+      [PMDIR='${prefix}'/"$pmdir_relative_path"])
 
+    AC_SUBST([PMDIR])
+    AC_MSG_RESULT([ $PMDIR ])
+    # --- End perl module directory selection --------------
 
+  ;;
+
+esac
 
 
 AC_MSG_CHECKING(whether we build universal binaries.)

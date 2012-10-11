@@ -1,9 +1,15 @@
-\.zip$
 Makefile$
 Makefile\.in$
+\.changes$
+\.deb$
+\.dsc$
+\.log$
+\.zip$
 ^aclocal.m4$
+^config.guess$
 ^config.log$
 ^config.status$
+^config.sub$
 ^configure$
 ^example.out$
 ^html
@@ -16,7 +22,3 @@ Makefile\.in$
 ^tests/results
 _Inline
 gz$
-\.deb$
-\.changes$
-\.dsc$
-\.log$

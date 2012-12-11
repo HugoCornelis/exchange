@@ -167,6 +167,7 @@ END PUBLIC_MODELS
 						  },
 						 ],
 				description => "low-level yaml export of the loaded neuroml",
+				disabled => 'the mapping of NEUROML_group and NEUROML_cable does not work anymore, unknown cause',
 			       },
 			      ],
        description => "loading of neuroml files",

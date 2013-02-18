@@ -52,17 +52,15 @@ dist-hook:
 	$(srcdir)/install-sh -d $(distdir)/tests/html
 	cp -pR $(srcdir)/tests/command_extractor $(distdir)/tests
 	cp -pR $(srcdir)/tests/command_extractor.ptkdb $(distdir)/tests
-	cp -pR $(srcdir)/tests/tests_2_html $(distdir)/tests
-	cp -pR $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
 	cp -pR $(srcdir)/tests/tests.config $(distdir)/tests
 	cp -pR $(srcdir)/tests.config $(distdir)
-	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
+	( cd $(distdir)/tests && chmod -R u+w . && neurospaces_harness_2_html --introduction introduction.html )
 
 html-upload-prepare:
 	rm -fr html/htdocs/neurospaces_project/exchange
 	mkdir -p html/htdocs/neurospaces_project/exchange
-# $Format: "	( cd tests && ./tests_2_html --header '<img src=\"ns-main-logo-dark2-notext-32x32.jpg\" alt=\"Main Neurospaces logo\"> ${package}, ${label}, ${email} <hr>' --introduction introduction.html )" $
-	( cd tests && ./tests_2_html --header '<img src="ns-main-logo-dark2-notext-32x32.jpg" alt="Main Neurospaces logo"> neurospaces 0.1675 Thu, 27 Dec 2007 15:58:18 -0600 hugo<hr>' --introduction introduction.html )
+# $Format: "	( cd tests && neurospaces_harness_2_html --header '<img src=\"ns-main-logo-dark2-notext-32x32.jpg\" alt=\"Main Neurospaces logo\"> ${package}, ${label}, ${email} <hr>' --introduction introduction.html )" $
+	( cd tests && neurospaces_harness_2_html --header '<img src="ns-main-logo-dark2-notext-32x32.jpg" alt="Main Neurospaces logo"> neurospaces 0.1675 Thu, 27 Dec 2007 15:58:18 -0600 hugo<hr>' --introduction introduction.html )
 	tar cfh - tests/html | ( cd html/htdocs/neurospaces_project/exchange && tar vxf - )
 
 #t perhaps also add a target to check the syntax of all the html ?

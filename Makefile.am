@@ -87,7 +87,7 @@ docs-level7:
 
 docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 docs-level7
 
-TESTS = /usr/local/bin/neurospaces_harness
+TESTS = run_harness.sh
 
 #-------------------------------------------------------
 # Packaging
